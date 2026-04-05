@@ -3,10 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Last Road</title>
-    <script src="https://gstatic.com"></script>
-    <script src="https://gstatic.com"></script>
-
+    <title>The Last Road - Start</title>
     <style>
         body, html {
             margin: 0; padding: 0; height: 100%;
@@ -17,12 +14,12 @@
             overflow: hidden;
         }
 
-        /* التغبيش فقط على الخلفية، وليس على المحتوى */
+        /* التغبيش فقط على الخلفية */
         .background-blur {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.4); 
-            backdrop-filter: blur(3px); /* تغبيش خفيف جداً للخلفية فقط */
+            backdrop-filter: blur(3px); /* تغبيش خفيف للخلفية */
             z-index: 1;
         }
 
@@ -34,8 +31,9 @@
             max-width: 500px;
         }
 
+        /* صورة لين الواضحة */
         .lain-avatar {
-            width: 180px; /* حجم أوضح */
+            width: 180px; 
             height: 180px;
             border-radius: 50%;
             border: 1px solid rgba(0, 255, 136, 0.4);
@@ -43,7 +41,7 @@
             box-shadow: 0 0 40px rgba(0, 255, 136, 0.1);
             object-fit: cover;
             opacity: 0;
-            animation: fadeInLain 3s ease-out forwards; /* تظهر بوضوح تام */
+            animation: fadeInLain 3s ease-out forwards;
             display: block;
         }
 
@@ -56,7 +54,7 @@
             text-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
 
-        .google-btn {
+        .action-btn {
             background: transparent;
             border: 1px solid #444;
             color: #777;
@@ -68,13 +66,13 @@
             font-family: 'Courier New', Courier, monospace;
         }
 
-        .google-btn.visible {
+        .action-btn.visible {
             opacity: 1;
             border-color: #00ff88;
             color: #00ff88;
         }
 
-        .google-btn:hover {
+        .action-btn:hover {
             box-shadow: 0 0 25px rgba(0, 255, 136, 0.3);
             background: rgba(0, 255, 136, 0.05);
         }
@@ -92,7 +90,8 @@
     <div class="content">
         <img src="lain.jpg" class="lain-avatar" id="avatar">
         <h1 id="typewriter"></h1>
-        <button class="google-btn" id="loginBtn" onclick="loginWithGoogle()">
+        <!-- الزر اللي ينقلك لصفحة سوبارو -->
+        <button class="action-btn" id="nextBtn" onclick="goToRoom()">
             هل أنت متأكد من أنها فكرة جيدة أن ندخل هنا؟
         </button>
     </div>
@@ -100,6 +99,7 @@
     <script>
         const text = "إنه مكان غريب... لكن مألوف قليلاً";
         let i = 0;
+        
         function typeWriter() {
             if (i < text.length) {
                 document.getElementById("typewriter").innerHTML += text.charAt(i);
@@ -107,30 +107,17 @@
                 setTimeout(typeWriter, 140); 
             } else {
                 setTimeout(() => {
-                    document.getElementById("loginBtn").classList.add("visible");
+                    document.getElementById("nextBtn").classList.add("visible");
                 }, 1000);
             }
         }
-        setTimeout(typeWriter, 1000);
+        
+        // تبدأ الكتابة بعد ثانية ونصف
+        setTimeout(typeWriter, 1500);
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCK9fpEXgQ-5Yybwqj_MGq7BGJo0CdmUbk",
-            authDomain: "://firebaseapp.com",
-            projectId: "the-unknown-limit",
-            storageBucket: "the-unknown-limit.firebasestorage.app",
-            messagingSenderId: "876638500475",
-            appId: "1:876638500475:web:e21bfafb46da2c9cbe94de"
-        };
-        firebase.initializeApp(firebaseConfig);
-
-        function loginWithGoogle() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            firebase.auth().signInWithPopup(provider).then((result) => {
-                // الانتقال لصفحة الممر (Page 2) بعد تسجيل الدخول
-                window.location.href = "room.html";
-            }).catch((error) => {
-                console.log(error);
-            });
+        function goToRoom() {
+            // الانتقال لصفحة سوبارو (الممر)
+            window.location.href = "room.html";
         }
     </script>
 </body>
