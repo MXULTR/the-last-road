@@ -10,58 +10,52 @@
     <style>
         body, html {
             margin: 0; padding: 0; height: 100%; width: 100%;
-            /* جعل الصورة تغطي كامل الشاشة بدقة */
-            background: #000 url('subaru.jpg') no-repeat center center fixed;
-            background-size: cover; 
+            background: #000 url('subaru.jpg') no-repeat center center;
+            background-size: 100% 100%; /* يجبر الصورة على ملء كامل الشاشة */
             font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
-            display: flex;
-            justify-content: flex-end; /* دفع المحتوى لجهة اليمين */
-            align-items: flex-start;
         }
 
-        /* حاوية النصوص - موزونة فوق المربعات الخضراء */
+        /* حاوية الواجهة الموزونة فوق المربعات الخضراء في جهة اليمين */
         .ui-overlay {
             position: absolute;
-            top: 21%;    /* الارتفاع عن فوق */
-            right: 5%;   /* البعد عن الحافة اليمنى */
-            width: 32%;  /* عرض الحاوية لتناسب مستطيل الصورة */
+            top: 29%;    /* الارتفاع من الأعلى */
+            right: 7.2%; /* القرب من الجهة اليمنى */
+            width: 34.5%; /* عرض الحاوية لتطابق المربعات في الصورة */
             display: flex;
             flex-direction: column;
             z-index: 5;
         }
 
-        /* نص الحوار (فوق المربع الأخضر الكبير) */
         .dialogue-text {
             color: #00ff88;
-            font-size: 14px; /* حجم خط مناسب للجوال */
-            line-height: 1.4;
+            font-size: 1.2vw; /* حجم الخط يتناسب مع عرض الشاشة */
+            line-height: 1.3;
             text-align: center;
-            min-height: 70px;
+            min-height: 65px;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 5px;
-            margin-bottom: 22px; /* المسافة للمربعات اللي تحتها */
+            margin-bottom: 23px; /* المسافة الفاصلة للمربعات التي تحتها */
             font-weight: bold;
         }
 
-        /* حاوية الأزرار (فوق المربعات الصغيرة) */
         .choices-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
             opacity: 0;
-            transition: 1s ease;
+            transition: 1.5s ease;
         }
 
         .choice-btn {
             background: transparent;
             border: none;
             color: #ffffff;
-            font-size: 11px;
+            font-size: 1vw;
             cursor: pointer;
-            height: 35px;
+            height: 38px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -71,7 +65,7 @@
 
         .choice-btn:hover {
             color: #00ff88;
-            text-shadow: 0 0 8px #00ff88;
+            text-shadow: 0 0 10px #00ff88;
         }
 
         .visible { opacity: 1; }
@@ -80,10 +74,7 @@
 <body>
 
     <div class="ui-overlay">
-        <!-- النص داخل المربع الكبير -->
         <div class="dialogue-text" id="dialogueText"></div>
-
-        <!-- الخيارات داخل المربعين الصغيرين -->
         <div class="choices-row" id="choiceContainer">
             <button class="choice-btn" onclick="loginWithGoogle()">سأدخل</button>
             <button class="choice-btn" onclick="goBack()">لست مستعداً</button>
@@ -93,18 +84,20 @@
     <script>
         const textToType = "اوه... ارى انه يجب علي تأكد امر دخولي... حسنا سا احاول";
         let i = 0;
-
         function typeWriter() {
             if (i < textToType.length) {
                 document.getElementById("dialogueText").innerHTML += textToType.charAt(i);
                 i++;
                 setTimeout(typeWriter, 100);
             } else {
-                document.getElementById("choiceContainer").classList.add("visible");
+                setTimeout(() => {
+                    document.getElementById("choiceContainer").classList.add("visible");
+                }, 800);
             }
         }
         window.onload = typeWriter;
 
+        // إعدادات Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCK9fpEXgQ-5Yybwqj_MGq7BGJo0CdmUbk",
             authDomain: "://firebaseapp.com",
@@ -118,10 +111,9 @@
         function loginWithGoogle() {
             const provider = new firebase.auth.GoogleAuthProvider();
             firebase.auth().signInWithPopup(provider).then((result) => {
-                alert("ACCESS GRANTED: " + result.user.displayName);
+                alert("ACCESS GRANTED. Welcome to The Last Road.");
             });
         }
-
         function goBack() { window.location.href = "index.html"; }
     </script>
 </body>
