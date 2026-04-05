@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Last Road</title>
+    <!-- استدعاء أدوات قوقل (Firebase) -->
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
+
+    <style>
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            background: #000 url('gate.jpg') no-repeat center center fixed; 
+            background-size: cover;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            overflow: hidden;
+        }
+
+        /* طبقة التغبيش والسواد الغامض */
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); 
+            backdrop-filter: blur(10px); /* تأثير الغرابة والألفة */
+            z-index: 1;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #efefef;
+            animation: fadeIn 3s ease-in;
+        }
+
+        h1 {
+            font-weight: 200;
+            font-style: italic;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .question {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+
+        .google-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #444;
+            color: #fff;
+            padding: 12px 30px;
+            cursor: pointer;
+            transition: 0.4s;
+            backdrop-filter: blur(5px);
+        }
+
+        .google-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #00ff88; /* لمسة أخضر بسيطة */
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <div class="content">
+        <h1>"إنه مكان غريب... لكن مألوف قليلاً"</h1>
+        
+        <p class="question">هل أنت متأكد أنك تريد الدخول؟</p>
+        
+        <button class="google-btn" onclick="loginWithGoogle()">
+            تسجيل الدخول عبر Google
+        </button>
+    </div>
+
+    <script>
+        // إعدادات Firebase الخاصة بك
+        const firebaseConfig = {
+            apiKey: "AIzaSyCK9fpEXgQ-5Yybwqj_MGq7BGJo0CdmUbk",
+            authDomain: "://firebaseapp.com",
+            projectId: "the-unknown-limit",
+            storageBucket: "the-unknown-limit.firebasestorage.app",
+            messagingSenderId: "876638500475",
+            appId: "1:876638500475:web:e21bfafb46da2c9cbe94de"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+
+        function loginWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider).then((result) => {
+                alert("أهلاً بك في The Last Road: " + result.user.displayName);
+                // هنا مستقبلاً سنوجهك لـ "لب الشغل"
+            }).catch((error) => {
+                alert("الباب مغلق.. حاول مجدداً");
+            });
+        }
+    </script>
+</body>
+</html>
