@@ -17,11 +17,12 @@
             overflow: hidden;
         }
 
-        .overlay {
+        /* التغبيش فقط على الخلفية، وليس على المحتوى */
+        .background-blur {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.9) 100%);
-            backdrop-filter: blur(5px); /* تم تخفيف التغبيش هنا ليكون أوضح */
+            background: rgba(0, 0, 0, 0.4); 
+            backdrop-filter: blur(3px); /* تغبيش خفيف جداً للخلفية فقط */
             z-index: 1;
         }
 
@@ -34,15 +35,15 @@
         }
 
         .lain-avatar {
-            width: 160px; /* كبرتها شوي عشان توضح */
-            height: 160px;
+            width: 180px; /* حجم أوضح */
+            height: 180px;
             border-radius: 50%;
-            border: 1px solid rgba(0, 255, 136, 0.3);
+            border: 1px solid rgba(0, 255, 136, 0.4);
             margin: 0 auto 30px auto;
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.1);
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.1);
             object-fit: cover;
             opacity: 0;
-            animation: fadeInAvatar 4s ease-in forwards;
+            animation: fadeInLain 3s ease-out forwards; /* تظهر بوضوح تام */
             display: block;
         }
 
@@ -52,19 +53,18 @@
             min-height: 1.5em;
             margin-bottom: 50px;
             color: #eee;
-            letter-spacing: 1px;
-            text-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
 
         .google-btn {
             background: transparent;
             border: 1px solid #444;
-            color: #888;
-            padding: 12px 35px;
+            color: #777;
+            padding: 15px 25px;
             cursor: pointer;
-            transition: 2s ease;
+            transition: 1.5s ease;
             opacity: 0;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-family: 'Courier New', Courier, monospace;
         }
 
@@ -79,18 +79,21 @@
             background: rgba(0, 255, 136, 0.05);
         }
 
-        @keyframes fadeInAvatar { to { opacity: 0.95; } } /* أوضح الآن */
+        @keyframes fadeInLain { 
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); } 
+        }
     </style>
 </head>
 <body>
 
-    <div class="overlay"></div>
+    <div class="background-blur"></div>
 
     <div class="content">
         <img src="lain.jpg" class="lain-avatar" id="avatar">
         <h1 id="typewriter"></h1>
         <button class="google-btn" id="loginBtn" onclick="loginWithGoogle()">
-            هل تظن أنها فكرة جيدة.. أن ندخل؟
+            هل أنت متأكد من أنها فكرة جيدة أن ندخل هنا؟
         </button>
     </div>
 
@@ -105,10 +108,10 @@
             } else {
                 setTimeout(() => {
                     document.getElementById("loginBtn").classList.add("visible");
-                }, 1200);
+                }, 1000);
             }
         }
-        setTimeout(typeWriter, 1500);
+        setTimeout(typeWriter, 1000);
 
         const firebaseConfig = {
             apiKey: "AIzaSyCK9fpEXgQ-5Yybwqj_MGq7BGJo0CdmUbk",
@@ -123,7 +126,10 @@
         function loginWithGoogle() {
             const provider = new firebase.auth.GoogleAuthProvider();
             firebase.auth().signInWithPopup(provider).then((result) => {
-                alert("تم فتح البوابة.. مرحباً بك في The Last Road");
+                // الانتقال لصفحة الممر (Page 2) بعد تسجيل الدخول
+                window.location.href = "room.html";
+            }).catch((error) => {
+                console.log(error);
             });
         }
     </script>
