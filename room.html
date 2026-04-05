@@ -13,61 +13,55 @@
             background: #000 url('subaru.jpg') no-repeat center center fixed;
             background-size: cover;
             font-family: 'Courier New', Courier, monospace;
-            display: flex; flex-direction: column; justify-content: flex-end;
-            align-items: center; overflow: hidden;
+            display: flex; justify-content: center;
+            overflow: hidden;
         }
 
-        .overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.4); z-index: 1;
+        /* حاوية التحكم الكاملة في موقع النصوص */
+        .game-interface {
+            position: absolute;
+            bottom: 12%; /* هذا الرقم يرفع وينزل كل شيء عشان يجي فوق المستطيل اللي في الصورة */
+            width: 90%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* المسافة بين نص الحوار والأزرار */
+            z-index: 2;
         }
 
-        /* حاوية الحوار والخيارات */
-        .ui-container {
-            position: relative; z-index: 2;
-            width: 95%; max-width: 600px;
-            margin-bottom: 40px;
-            display: flex; flex-direction: column; gap: 10px;
-        }
-
-        /* صندوق الحوار الرئيسي */
-        .main-dialogue {
-            background: rgba(0, 0, 0, 0.85);
-            border: 1.5px solid #00ff88;
-            padding: 20px;
-            color: #fff;
-            font-size: 1rem;
-            line-height: 1.5;
+        /* نص الحوار - بدون خلفية ولا حدود لأنه بيدخل في مستطيل الصورة */
+        .dialogue-text {
+            color: #efefef;
+            font-size: 1.1rem;
             text-align: center;
-            min-height: 60px;
-            display: flex; align-items: center; justify-content: center;
+            min-height: 80px;
+            padding: 10px;
+            text-shadow: 1px 1px 2px #000; /* عشان يوضح الكلام فوق الصورة */
         }
 
-        /* حاوية أزرار الخيارات (تحت الصندوق) */
-        .choices-grid {
+        /* حاوية الأزرار - نوزنها فوق المربعين اللي تحت */
+        .choices-area {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* تقسيم متساوي للنصفين */
-            gap: 10px;
-            opacity: 0; /* تختفي لين يخلص الكلام */
+            grid-template-columns: 1fr 1fr;
+            gap: 20px; /* جرب تغير هذا الرقم لين يركب الزرين فوق المربعات بالصورة */
+            opacity: 0;
             transition: 1s ease;
         }
 
         .choice-btn {
-            background: rgba(0, 0, 0, 0.9);
-            border: 1.5px solid #444;
+            background: transparent; /* شفاف تماماً */
+            border: none; /* بدون حدود */
             color: #888;
-            padding: 15px 5px;
+            padding: 15px;
             cursor: pointer;
             font-size: 0.85rem;
-            text-align: center;
             transition: 0.3s;
-            display: flex; align-items: center; justify-content: center;
+            text-align: center;
         }
 
         .choice-btn:hover {
-            border-color: #00ff88;
             color: #00ff88;
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+            text-shadow: 0 0 10px #00ff88;
         }
 
         .visible { opacity: 1; }
@@ -75,16 +69,14 @@
 </head>
 <body>
 
-    <div class="overlay"></div>
+    <div class="game-interface">
+        <!-- الكلام بيدخل هنا (فوق مستطيل الصورة الكبير) -->
+        <div class="dialogue-text" id="dialogueText"></div>
 
-    <div class="ui-container">
-        <!-- المربع الأساسي حق الكلام -->
-        <div class="main-dialogue" id="dialogueText"></div>
-
-        <!-- المربعين اللي تحت (الخيارات) -->
-        <div class="choices-grid" id="choiceContainer">
-            <button class="choice-btn" onclick="goBack()">اممم... لا أظن أني أريد ذلك</button>
+        <!-- الأزرار بتركب هنا (فوق المربعين الصغار) -->
+        <div class="choices-area" id="choiceContainer">
             <button class="choice-btn" onclick="loginWithGoogle()">لا مشكلة، سأدخل</button>
+            <button class="choice-btn" onclick="goBack()">اممم... لا أظن أني أريد ذلك</button>
         </div>
     </div>
 
@@ -96,15 +88,13 @@
             if (i < textToType.length) {
                 document.getElementById("dialogueText").innerHTML += textToType.charAt(i);
                 i++;
-                setTimeout(typeWriter, 80);
+                setTimeout(typeWriter, 100);
             } else {
                 document.getElementById("choiceContainer").classList.add("visible");
             }
         }
-
         window.onload = typeWriter;
 
-        // إعدادات Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCK9fpEXgQ-5Yybwqj_MGq7BGJo0CdmUbk",
             authDomain: "://firebaseapp.com",
@@ -118,14 +108,11 @@
         function loginWithGoogle() {
             const provider = new firebase.auth.GoogleAuthProvider();
             firebase.auth().signInWithPopup(provider).then((result) => {
-                alert("ACCESS GRANTED: " + result.user.email);
-                // هنا بنوديه لصفحة الـ 80% لاحقاً
+                alert("تم التحقق. أهلاً بك.");
             });
         }
 
-        function goBack() {
-            window.location.href = "index.html";
-        }
+        function goBack() { window.location.href = "index.html"; }
     </script>
 </body>
 </html>
