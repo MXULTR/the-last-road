@@ -22,38 +22,52 @@
             background: rgba(0, 0, 0, 0.4); z-index: 1;
         }
 
-        /* صندوق الحوار (RPG Style) */
-        .dialogue-box {
+        /* حاوية الحوار والخيارات */
+        .ui-container {
             position: relative; z-index: 2;
-            width: 90%; max-width: 700px;
+            width: 95%; max-width: 600px;
+            margin-bottom: 40px;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+
+        /* صندوق الحوار الرئيسي */
+        .main-dialogue {
             background: rgba(0, 0, 0, 0.85);
-            border: 2px solid #00ff88;
-            padding: 25px;
-            margin-bottom: 50px;
-            border-radius: 5px;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+            border: 1.5px solid #00ff88;
+            padding: 20px;
+            color: #fff;
+            font-size: 1rem;
+            line-height: 1.5;
+            text-align: center;
+            min-height: 60px;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        .text {
-            color: #fff; font-size: 1.1rem; line-height: 1.6;
-            margin-bottom: 25px; min-height: 3em;
-        }
-
-        /* أزرار الخيارات */
-        .choices {
-            display: flex; justify-content: space-around;
-            opacity: 0; transition: 1s ease;
+        /* حاوية أزرار الخيارات (تحت الصندوق) */
+        .choices-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* تقسيم متساوي للنصفين */
+            gap: 10px;
+            opacity: 0; /* تختفي لين يخلص الكلام */
+            transition: 1s ease;
         }
 
         .choice-btn {
-            background: transparent; border: 1px solid #444;
-            color: #aaa; padding: 10px 20px; cursor: pointer;
-            font-size: 0.9rem; transition: 0.3s;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1.5px solid #444;
+            color: #888;
+            padding: 15px 5px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            text-align: center;
+            transition: 0.3s;
+            display: flex; align-items: center; justify-content: center;
         }
 
         .choice-btn:hover {
-            border-color: #00ff88; color: #00ff88;
-            background: rgba(0, 255, 136, 0.05);
+            border-color: #00ff88;
+            color: #00ff88;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
         }
 
         .visible { opacity: 1; }
@@ -63,9 +77,12 @@
 
     <div class="overlay"></div>
 
-    <div class="dialogue-box">
-        <div class="text" id="dialogueText"></div>
-        <div class="choices" id="choiceContainer">
+    <div class="ui-container">
+        <!-- المربع الأساسي حق الكلام -->
+        <div class="main-dialogue" id="dialogueText"></div>
+
+        <!-- المربعين اللي تحت (الخيارات) -->
+        <div class="choices-grid" id="choiceContainer">
             <button class="choice-btn" onclick="goBack()">اممم... لا أظن أني أريد ذلك</button>
             <button class="choice-btn" onclick="loginWithGoogle()">لا مشكلة، سأدخل</button>
         </div>
@@ -79,7 +96,7 @@
             if (i < textToType.length) {
                 document.getElementById("dialogueText").innerHTML += textToType.charAt(i);
                 i++;
-                setTimeout(typeWriter, 100);
+                setTimeout(typeWriter, 80);
             } else {
                 document.getElementById("choiceContainer").classList.add("visible");
             }
@@ -87,7 +104,7 @@
 
         window.onload = typeWriter;
 
-        // إعدادات Firebase (نفس كودك السابق)
+        // إعدادات Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCK9fpEXgQ-5Yybwqj_MGq7BGJo0CdmUbk",
             authDomain: "://firebaseapp.com",
@@ -101,8 +118,8 @@
         function loginWithGoogle() {
             const provider = new firebase.auth.GoogleAuthProvider();
             firebase.auth().signInWithPopup(provider).then((result) => {
-                // هنا مستقبلاً نوجههم لـ "لب المشروع" الحقيقي
-                alert("تم التحقق. أهلاً بك في ممر The Last Road");
+                alert("ACCESS GRANTED: " + result.user.email);
+                // هنا بنوديه لصفحة الـ 80% لاحقاً
             });
         }
 
