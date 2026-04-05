@@ -13,50 +13,54 @@
             background: #000 url('subaru.jpg') no-repeat center center fixed;
             background-size: cover;
             font-family: 'Courier New', Courier, monospace;
-            display: flex; justify-content: center;
             overflow: hidden;
         }
 
-        /* حاوية التحكم الكاملة في موقع النصوص */
-        .game-interface {
+        /* حاوية الواجهة - وضعناها في جهة اليمين فوق المربعات */
+        .ui-overlay {
             position: absolute;
-            bottom: 12%; /* هذا الرقم يرفع وينزل كل شيء عشان يجي فوق المستطيل اللي في الصورة */
-            width: 90%;
-            max-width: 600px;
+            top: 13%;    /* تحكم في الارتفاع من هنا */
+            right: 8%;   /* تحكم في القرب من الحافة اليمنى من هنا */
+            width: 38%;  /* عرض الحاوية لتناسب المربعات */
             display: flex;
             flex-direction: column;
-            gap: 15px; /* المسافة بين نص الحوار والأزرار */
-            z-index: 2;
+            z-index: 5;
         }
 
-        /* نص الحوار - بدون خلفية ولا حدود لأنه بيدخل في مستطيل الصورة */
+        /* مربع الحوار الكبير (فوق المربع الأخضر العلوي) */
         .dialogue-text {
-            color: #efefef;
-            font-size: 1.1rem;
+            color: #00ff88;
+            font-size: 1.1vw; /* حجم الخط يتغير مع الشاشة */
+            line-height: 1.4;
             text-align: center;
-            min-height: 80px;
+            height: 80px; /* طول المربع العلوي تقريباً */
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 10px;
-            text-shadow: 1px 1px 2px #000; /* عشان يوضح الكلام فوق الصورة */
+            margin-bottom: 25px; /* المسافة بين المربع الكبير والصغيرين */
         }
 
-        /* حاوية الأزرار - نوزنها فوق المربعين اللي تحت */
-        .choices-area {
+        /* حاوية الأزرار (فوق المربعين الصغيرين) */
+        .choices-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px; /* جرب تغير هذا الرقم لين يركب الزرين فوق المربعات بالصورة */
+            gap: 10px;
             opacity: 0;
             transition: 1s ease;
         }
 
         .choice-btn {
-            background: transparent; /* شفاف تماماً */
-            border: none; /* بدون حدود */
-            color: #888;
-            padding: 15px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 0.8vw;
             cursor: pointer;
-            font-size: 0.85rem;
+            height: 40px; /* طول المربعات الصغيرة */
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: 0.3s;
-            text-align: center;
         }
 
         .choice-btn:hover {
@@ -69,14 +73,16 @@
 </head>
 <body>
 
-    <div class="game-interface">
-        <!-- الكلام بيدخل هنا (فوق مستطيل الصورة الكبير) -->
+    <div class="ui-overlay">
+        <!-- النص داخل المربع الكبير -->
         <div class="dialogue-text" id="dialogueText"></div>
 
-        <!-- الأزرار بتركب هنا (فوق المربعين الصغار) -->
-        <div class="choices-area" id="choiceContainer">
+        <!-- الخيارات داخل المربعين الصغيرين -->
+        <div class="choices-row" id="choiceContainer">
+            <!-- اليمين: قبول -->
             <button class="choice-btn" onclick="loginWithGoogle()">لا مشكلة، سأدخل</button>
-            <button class="choice-btn" onclick="goBack()">اممم... لا أظن أني أريد ذلك</button>
+            <!-- اليسار: رفض -->
+            <button class="choice-btn" onclick="goBack()">لا، لست مستعداً</button>
         </div>
     </div>
 
@@ -108,7 +114,7 @@
         function loginWithGoogle() {
             const provider = new firebase.auth.GoogleAuthProvider();
             firebase.auth().signInWithPopup(provider).then((result) => {
-                alert("تم التحقق. أهلاً بك.");
+                alert("تم التحقق. جاري نقلك لقلب الشغل...");
             });
         }
 
