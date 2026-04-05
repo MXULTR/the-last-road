@@ -1,97 +1,15 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Denied - The Last Road</title>
+    <title>Refused</title>
     <style>
-        body, html {
-            margin: 0; padding: 0; height: 100%; width: 100%;
-            background: #000;
-            font-family: 'Courier New', Courier, monospace;
-            overflow: hidden;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-        }
-
-        #bg-video {
-            position: fixed;
-            right: 0; bottom: 0;
-            min-width: 100%; min-height: 100%;
-            z-index: -1;
-            object-fit: cover;
-            /* إضافة صورة احتياطية في حال تعطل الفيديو */
-            background: url('gate.jpg') no-repeat center center;
+        body {
+            background-image: url('subaru.jpg');
             background-size: cover;
-        }
-
-        .dark-fade {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
-            z-index: 10;
-            animation: clearSight 4s forwards;
-            pointer-events: none;
-        }
-
-        .content {
-            position: relative; z-index: 15;
-            text-align: center;
-            max-width: 85%;
-        }
-
-        .angry-text {
-            color: #ff0000;
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-shadow: 0 0 10px #ff0000;
-            margin-bottom: 60px;
-            animation: shake 0.1s infinite;
-        }
-
-        .shake-btn {
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid #444;
-            color: #fff;
-            padding: 12px 45px;
-            cursor: pointer;
-            animation: subtleShake 0.1s infinite;
-        }
-
-        @keyframes shake {
-            0% { transform: translate(1px, 1px); }
-            50% { transform: translate(-1px, -1px); }
-            100% { transform: translate(0, 0); }
-        }
-
-        @keyframes clearSight {
-            0% { opacity: 1; }
-            100% { opacity: 0.5; }
         }
     </style>
 </head>
 <body>
-    <div class="dark-fade"></div>
-
-    <!-- جرب تغيير الاسم هنا ليتطابق مع الملف الجديد -->
-    <video autoplay muted loop playsinline id="bg-video">
-        <source src="subaru.mp4" type="video/mp4">
-    </video>
-
-    <div class="content">
-        <p class="angry-text">
-            "من أنت حتى ترفض... أصلاً ما كان مرحب بك، أنت مجرد دخيل أو قروي ضل طريقه!"
-        </p>
-        <button class="shake-btn" onclick="terminate()">اسـتـمـر</button>
-    </div>
-
-    <script>
-        function terminate() {
-            window.location.href = "https://google.com";
-        }
-        
-        // إجبار الفيديو على العمل عند التحميل
-        window.addEventListener('load', function() {
-            document.getElementById('bg-video').play();
-        });
-    </script>
+    <h1>Welcome to the Refused Page</h1>
+    <p>This is a simple HTML page with a background image.</p>
 </body>
 </html>
