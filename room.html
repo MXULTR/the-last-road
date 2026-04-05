@@ -9,39 +9,44 @@
 
     <style>
         body, html {
-            margin: 0; padding: 0; height: 100%;
+            margin: 0; padding: 0; height: 100%; width: 100%;
+            /* جعل الصورة تغطي كامل الشاشة بدقة */
             background: #000 url('subaru.jpg') no-repeat center center fixed;
-            background-size: cover;
+            background-size: cover; 
             font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
+            display: flex;
+            justify-content: flex-end; /* دفع المحتوى لجهة اليمين */
+            align-items: flex-start;
         }
 
-        /* حاوية الواجهة - وضعناها في جهة اليمين فوق المربعات */
+        /* حاوية النصوص - موزونة فوق المربعات الخضراء */
         .ui-overlay {
             position: absolute;
-            top: 13%;    /* تحكم في الارتفاع من هنا */
-            right: 8%;   /* تحكم في القرب من الحافة اليمنى من هنا */
-            width: 38%;  /* عرض الحاوية لتناسب المربعات */
+            top: 21%;    /* الارتفاع عن فوق */
+            right: 5%;   /* البعد عن الحافة اليمنى */
+            width: 32%;  /* عرض الحاوية لتناسب مستطيل الصورة */
             display: flex;
             flex-direction: column;
             z-index: 5;
         }
 
-        /* مربع الحوار الكبير (فوق المربع الأخضر العلوي) */
+        /* نص الحوار (فوق المربع الأخضر الكبير) */
         .dialogue-text {
             color: #00ff88;
-            font-size: 1.1vw; /* حجم الخط يتغير مع الشاشة */
+            font-size: 14px; /* حجم خط مناسب للجوال */
             line-height: 1.4;
             text-align: center;
-            height: 80px; /* طول المربع العلوي تقريباً */
+            min-height: 70px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 10px;
-            margin-bottom: 25px; /* المسافة بين المربع الكبير والصغيرين */
+            padding: 5px;
+            margin-bottom: 22px; /* المسافة للمربعات اللي تحتها */
+            font-weight: bold;
         }
 
-        /* حاوية الأزرار (فوق المربعين الصغيرين) */
+        /* حاوية الأزرار (فوق المربعات الصغيرة) */
         .choices-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -53,19 +58,20 @@
         .choice-btn {
             background: transparent;
             border: none;
-            color: #fff;
-            font-size: 0.8vw;
+            color: #ffffff;
+            font-size: 11px;
             cursor: pointer;
-            height: 40px; /* طول المربعات الصغيرة */
+            height: 35px;
             display: flex;
             align-items: center;
             justify-content: center;
+            text-align: center;
             transition: 0.3s;
         }
 
         .choice-btn:hover {
             color: #00ff88;
-            text-shadow: 0 0 10px #00ff88;
+            text-shadow: 0 0 8px #00ff88;
         }
 
         .visible { opacity: 1; }
@@ -79,10 +85,8 @@
 
         <!-- الخيارات داخل المربعين الصغيرين -->
         <div class="choices-row" id="choiceContainer">
-            <!-- اليمين: قبول -->
-            <button class="choice-btn" onclick="loginWithGoogle()">لا مشكلة، سأدخل</button>
-            <!-- اليسار: رفض -->
-            <button class="choice-btn" onclick="goBack()">لا، لست مستعداً</button>
+            <button class="choice-btn" onclick="loginWithGoogle()">سأدخل</button>
+            <button class="choice-btn" onclick="goBack()">لست مستعداً</button>
         </div>
     </div>
 
@@ -114,7 +118,7 @@
         function loginWithGoogle() {
             const provider = new firebase.auth.GoogleAuthProvider();
             firebase.auth().signInWithPopup(provider).then((result) => {
-                alert("تم التحقق. جاري نقلك لقلب الشغل...");
+                alert("ACCESS GRANTED: " + result.user.displayName);
             });
         }
 
