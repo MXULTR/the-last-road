@@ -3,47 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Passage - The Last Road</title>
+    <title>The Entrance - The Last Road</title>
     <script src="https://gstatic.com"></script>
     <script src="https://gstatic.com"></script>
 
     <style>
         body, html {
             margin: 0; padding: 0; height: 100%; width: 100%;
-            background: #000 url('subaru.jpg') no-repeat center center fixed;
+            background: #000 url('entrance.jpg') no-repeat center center fixed;
             background-size: cover;
             font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
-            display: flex; justify-content: center; align-items: center;
+            display: flex; justify-content: center; align-items: flex-end;
         }
 
         .overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5); z-index: 1;
+            background: rgba(0, 0, 0, 0.4); z-index: 1;
         }
 
-        /* حاوية الواجهة المركزية */
-        .game-interface {
+        /* حاوية الحوار السفلي (RPG Style) */
+        .ui-box {
             position: relative; z-index: 5;
-            width: 90%; max-width: 500px;
+            width: 90%; max-width: 650px;
+            margin-bottom: 40px;
             display: flex; flex-direction: column; gap: 15px;
         }
 
-        /* المربع الكبير للحوار (نحن صنعناه بالكود) */
-        .dialogue-box {
-            background: rgba(0, 20, 0, 0.85); /* لون أسود مائل للأخضر السايبر */
-            border: 2px solid #00ff88;
+        /* صندوق الكلام الرئيسي */
+        .dialogue-main {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #555;
             padding: 20px;
-            color: #00ff88;
-            font-size: 1.1rem;
+            color: #ccc;
             text-align: center;
-            min-height: 80px;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+            font-size: 1.1rem;
+            min-height: 60px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
 
-        /* حاوية المربعين الصغيرين (الخيارات) */
-        .choices-container {
+        /* حاوية خيارات اليمين واليسار */
+        .choices-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
@@ -51,10 +51,10 @@
             transition: 1.5s ease;
         }
 
-        .choice-card {
-            background: rgba(0, 0, 0, 0.9);
-            border: 2px solid #444;
-            color: #fff;
+        .choice-item {
+            background: rgba(20, 20, 20, 0.95);
+            border: 1px solid #333;
+            color: #777;
             padding: 15px;
             cursor: pointer;
             text-align: center;
@@ -62,11 +62,10 @@
             transition: 0.3s;
         }
 
-        .choice-card:hover {
-            border-color: #00ff88;
-            color: #00ff88;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
-            transform: translateY(-3px);
+        .choice-item:hover {
+            border-color: #ff3333; /* أحمر خفيف للغموض */
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255, 51, 51, 0.2);
         }
 
         .visible { opacity: 1; }
@@ -76,31 +75,34 @@
 
     <div class="overlay"></div>
 
-    <div class="game-interface">
-        <!-- مربع الحوار اللي سويناه بالكود -->
-        <div class="dialogue-box" id="dialogueText"></div>
+    <div class="ui-box">
+        <!-- الحوار اللي ينكتب -->
+        <div class="dialogue-main" id="dialogueText"></div>
 
-        <!-- المربعين اللي تحت (الخيارات) -->
-        <div class="choices-container" id="choiceContainer">
-            <button class="choice-card" onclick="loginWithGoogle()">سأدخل</button>
-            <button class="choice-card" onclick="goBack()">لست مستعداً</button>
+        <!-- الأزرار الموزونة -->
+        <div class="choices-grid" id="choiceContainer">
+            <!-- يمين: تقدم (قوقل) -->
+            <button class="choice-item" onclick="loginWithGoogle()">أظن أني سأستمر بالتقدم</button>
+            <!-- يسار: عودة (صفحة مسدودة) -->
+            <button class="choice-item" onclick="goAway()">ناه أظن أني أريد العودة يبدو مشبوه جداً</button>
         </div>
     </div>
 
     <script>
-        const textToType = "اوه... ارى انه يجب علي تأكد امر دخولي... حسنا سا احاول";
+        const textToType = "اوه المدخل من هناك... هل اعود ادراجي ام استمر؟";
         let i = 0;
         function typeWriter() {
             if (i < textToType.length) {
                 document.getElementById("dialogueText").innerHTML += textToType.charAt(i);
                 i++;
-                setTimeout(typeWriter, 100);
+                setTimeout(typeWriter, 120);
             } else {
                 document.getElementById("choiceContainer").classList.add("visible");
             }
         }
         window.onload = typeWriter;
 
+        // إعدادات Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCK9fpEXgQ-5Yybwqj_MGq7BGJo0CdmUbk",
             authDomain: "://firebaseapp.com",
@@ -114,10 +116,14 @@
         function loginWithGoogle() {
             const provider = new firebase.auth.GoogleAuthProvider();
             firebase.auth().signInWithPopup(provider).then((result) => {
-                alert("تم التحقق بنجاح. أهلاً بك يا بطل.");
+                alert("تم التوثيق. أهلاً بك في عالم The Last Road");
             });
         }
-        function goBack() { window.location.href = "index.html"; }
+
+        function goAway() {
+            // هنا بنوديه للصفحة المسدودة (العتاب) لاحقاً
+            window.location.href = "refused.html";
+        }
     </script>
 </body>
 </html>
