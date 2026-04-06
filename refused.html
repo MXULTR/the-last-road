@@ -3,114 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Denied - The Last Road</title>
+    <title>Goodbye - The Last Road</title>
     <style>
         body, html {
             margin: 0; padding: 0; height: 100%; width: 100%;
-            background: #000;
+            background: #050505 url('sad.jpg') no-repeat center center fixed;
+            background-size: cover;
             font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
 
-        /* الفيديو في الخلفية */
-        #bg-video {
-            position: fixed;
-            right: 0; bottom: 0;
-            min-width: 100%; min-height: 100%;
-            z-index: -1;
-            object-fit: cover;
-        }
-
-        /* تأثير "تفتيح العين" ببطء (كاتسين) */
-        .eye-blink {
+        /* تفتيح العين ببطء */
+        .eye-fade {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
-            z-index: 10;
-            animation: openEye 5s ease-in-out forwards;
+            background: #000; z-index: 10;
+            animation: openEye 4s ease-in-out forwards;
             pointer-events: none;
         }
 
         .content {
             position: relative; z-index: 15;
             text-align: center;
-            max-width: 85%;
+            max-width: 80%;
         }
 
-        /* نص الغضب المهتز */
-        .angry-text {
-            color: #ff0000;
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-shadow: 0 0 20px #000, 0 0 10px #ff0000;
-            margin-bottom: 60px;
-            opacity: 0; /* يبدأ مخفي ويظهر مع الكاتسين */
-            animation: fadeIn 3s forwards 3s, shake 0.1s infinite;
+        /* نص حزين وأزرق باهت */
+        .sad-text {
+            color: #add8e6; /* Blue Light */
+            font-size: 1.4rem;
+            text-shadow: 0 0 10px rgba(173, 216, 230, 0.4);
+            margin-bottom: 50px;
+            min-height: 2em;
         }
 
-        .shake-btn {
-            background: rgba(0, 0, 0, 0.8);
+        .exit-btn {
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid #444;
             color: #666;
-            padding: 12px 45px;
-            font-size: 1.1rem;
+            padding: 10px 40px;
             cursor: pointer;
             opacity: 0;
-            animation: fadeIn 2s forwards 5s;
-            transition: 0.3s;
+            animation: fadeIn 2s forwards 4s;
+            transition: 0.5s;
         }
 
-        .shake-btn:hover {
-            color: #fff; border-color: #ff0000;
-            box-shadow: 0 0 20px #ff0000;
+        .exit-btn:hover {
+            color: #fff; border-color: #add8e6;
+            box-shadow: 0 0 15px rgba(173, 216, 230, 0.2);
         }
 
-        @keyframes openEye {
-            0% { opacity: 1; }
-            100% { opacity: 0.4; } /* يبقى الجو مظلم قليلاً */
-        }
-
+        @keyframes openEye { 0% { opacity: 1; } 100% { opacity: 0.4; } }
         @keyframes fadeIn { to { opacity: 1; } }
-
-        @keyframes shake {
-            0% { transform: translate(1px, 1px); }
-            50% { transform: translate(-1px, -1px); }
-            100% { transform: translate(0, 0); }
-        }
     </style>
 </head>
 <body>
 
-    <div class="eye-blink"></div>
-
-    <!-- فيديو سوبارو -->
-    <video autoplay muted loop playsinline id="bg-video">
-        <source src="Subaru.mp4" type="video/mp4">
-    </video>
-
-    <!-- ملف الصوت الميم -->
-    <audio id="getOutAudio">
-        <source src="GET OUT.mp3" type="audio/mpeg">
-    </audio>
+    <div class="eye-fade"></div>
 
     <div class="content">
-        <p class="angry-text" id="typewriter">
-            "من أنت حتى ترفض... أصلاً ما كان مرحب بك، أنت مجرد دخيل أو قروي ضل طريقه!"
-        </p>
-        
-        <button class="shake-btn" onclick="kickOut()">اسـتـمـر</button>
+        <h1 class="sad-text" id="typewriter"></h1>
+        <button class="exit-btn" onclick="window.location.href='https://google.com'">استمرار...</button>
     </div>
 
     <script>
-        function kickOut() {
-            var audio = document.getElementById('getOutAudio');
-            audio.play(); // تشغيل صوت GET OUT
-            
-            // انتظر ثانية (لين يصرخ) ثم اطرده لقوقل
-            setTimeout(function() {
-                window.location.href = "https://google.com";
-            }, 1200);
+        const text = " :( ... اوكيه ما توقعت احد يرفض الصراحه ... ببكي";
+        let i = 0;
+        function typeWriter() {
+            if (i < text.length) {
+                document.getElementById("typewriter").innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 150); // بطيء وحزين
+            }
         }
+        // يبدأ الكتابة بعد ما تفتح العين
+        setTimeout(typeWriter, 2000);
     </script>
 </body>
 </html>
