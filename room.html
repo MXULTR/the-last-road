@@ -3,48 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Passage - The Last Road</title>
-    <script src="https://gstatic.com"></script>
-    <script src="https://gstatic.com"></script>
-
+    <title>The Entrance - The Last Road</title>
     <style>
         body, html {
             margin: 0; padding: 0; height: 100%; width: 100%;
-            /* استبدال الخلفية بالـ GIF الجديد */
+            /* الخلفية المتحركة اللي ضفتها */
             background: #000 url('entrance.gif') no-repeat center center fixed;
             background-size: cover;
             font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
-            display: flex; justify-content: center; align-items: center;
+            display: flex; justify-content: center; align-items: flex-end;
         }
 
         .overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5); z-index: 1;
+            background: rgba(0, 0, 0, 0.4); z-index: 1;
         }
 
-        /* حاوية الواجهة المركزية */
-        .game-interface {
+        /* حاوية الحوار (RPG Style) */
+        .ui-box {
             position: relative; z-index: 5;
-            width: 90%; max-width: 550px;
+            width: 90%; max-width: 650px;
+            margin-bottom: 50px;
             display: flex; flex-direction: column; gap: 15px;
         }
 
-        /* صندوق الحوار الموزون */
-        .dialogue-box {
-            background: rgba(0, 10, 0, 0.9);
+        /* صندوق الكلام */
+        .dialogue-main {
+            background: rgba(0, 0, 0, 0.9);
             border: 1px solid #444;
             padding: 20px;
             color: #efefef;
-            font-size: 1.1rem;
             text-align: center;
-            min-height: 80px;
-            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+            min-height: 60px;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
 
-        /* المربعين الصغيرين (الخيارات) */
-        .choices-container {
+        /* حاوية الخيارات */
+        .choices-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
@@ -52,22 +49,21 @@
             transition: 1.5s ease;
         }
 
-        .choice-card {
-            background: rgba(0, 0, 0, 0.95);
+        .choice-item {
+            background: rgba(10, 10, 10, 0.95);
             border: 1px solid #333;
             color: #888;
             padding: 15px;
             cursor: pointer;
             text-align: center;
             font-size: 0.9rem;
-            transition: 0.4s;
+            transition: 0.3s;
         }
 
-        .choice-card:hover {
+        .choice-item:hover {
             border-color: #00ff88;
-            color: #00ff88;
+            color: #fff;
             box-shadow: 0 0 15px rgba(0, 255, 136, 0.1);
-            transform: translateY(-2px);
         }
 
         .visible { opacity: 1; }
@@ -77,14 +73,17 @@
 
     <div class="overlay"></div>
 
-    <div class="game-interface">
-        <div class="dialogue-box" id="dialogueText"></div>
+    <div class="ui-box">
+        <!-- النص اللي ينكتب حرف حرف -->
+        <div class="dialogue-main" id="dialogueText"></div>
 
-        <div class="choices-container" id="choiceContainer">
-            <!-- يمين: دخول -->
-            <button class="choice-card" onclick="loginWithGoogle()">أظن أني سأستمر بالتقدم</button>
-            <!-- يسار: رفض (يرميه في فخ سوبارو) -->
-            <button class="choice-card" onclick="goAway()">ناه أظن أني أريد العودة يبدو مشبوه جداً</button>
+        <!-- الأزرار اللي تنقلك للمسارات المختلفة -->
+        <div class="choices-grid" id="choiceContainer">
+            <!-- يمين: يوديك لصفحة الكود (login.html) -->
+            <button class="choice-item" onclick="window.location.href='login.html'">أظن أني سأستمر بالتقدم</button>
+            
+            <!-- يسار: يوديك لصفحة سوبارو الحزين (refused.html) -->
+            <button class="choice-item" onclick="window.location.href='refused.html'">ناه أظن أني أريد العودة يبدو مشبوه جداً</button>
         </div>
     </div>
 
@@ -101,27 +100,6 @@
             }
         }
         window.onload = typeWriter;
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCK9fpEXgQ-5Yybwqj_MGq7BGJo0CdmUbk",
-            authDomain: "://firebaseapp.com",
-            projectId: "the-unknown-limit",
-            storageBucket: "the-unknown-limit.firebasestorage.app",
-            messagingSenderId: "876638500475",
-            appId: "1:876638500475:web:e21bfafb46da2c9cbe94de"
-        };
-        firebase.initializeApp(firebaseConfig);
-
-        function loginWithGoogle() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            firebase.auth().signInWithPopup(provider).then((result) => {
-                alert("تم التوثيق. أهلاً بك في The Last Road");
-            });
-        }
-
-        function goAway() {
-            window.location.href = "refused.html";
-        }
     </script>
 </body>
 </html>
