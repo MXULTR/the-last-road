@@ -14,7 +14,6 @@
             display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
 
-        /* تأثير تفتيح العين ببطء */
         .eye-fade {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 10;
@@ -28,13 +27,11 @@
             max-width: 80%;
         }
 
-        /* نص حزين يهتز بخفة */
         .sad-text {
             color: #add8e6;
             font-size: 1.4rem;
             text-shadow: 0 0 10px rgba(173, 216, 230, 0.4);
             margin-bottom: 50px;
-            animation: slowShake 2s infinite alternate;
         }
 
         .exit-btn {
@@ -50,10 +47,9 @@
         .exit-btn.visible { opacity: 1; }
 
         @keyframes openEye { 0% { opacity: 1; } 100% { opacity: 0.4; } }
-        @keyframes slowShake { from { transform: translateX(1px); } to { transform: translateX(-1px); } }
     </style>
 </head>
-<body onclick="playMeme()"> <!-- أي لمسة تشغل الصوت -->
+<body onclick="playMeme()"> 
 
     <div class="eye-fade"></div>
 
@@ -62,9 +58,9 @@
         <button id="exitBtn" class="exit-btn" onclick="terminate()">استمرار...</button>
     </div>
 
-    <!-- ملف الصوت الميم الملحوم -->
+    <!-- تم تعديل الاسم هنا ليطابق صورتك بالملي (مع المسافة) -->
     <audio id="memeAudio">
-        <source src="GETOUT.mp3" type="audio/mpeg">
+        <source src="GET OUT.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -72,16 +68,14 @@
         let i = 0;
         let soundPlayed = false;
 
-        // دالة تشغيل الصوت
         function playMeme() {
             if (!soundPlayed) {
                 const audio = document.getElementById('memeAudio');
-                audio.play().catch(e => console.log("لازم تلمس الشاشة أول"));
+                audio.play().catch(e => console.log("تفاعل مطلوب"));
                 soundPlayed = true;
             }
         }
 
-        // دالة الكتابة التدريجية
         function typeWriter() {
             if (i < text.length) {
                 document.getElementById("typewriter").innerHTML += text.charAt(i);
@@ -92,7 +86,6 @@
             }
         }
 
-        // يبدأ الفيلم بعد ثانيتين
         setTimeout(typeWriter, 2000);
 
         function terminate() {
