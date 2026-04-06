@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Last Road - Start</title>
+    <title>The Last Road - Gateway</title>
     <style>
         body, html {
-            margin: 0; padding: 0; height: 100%;
-            display: flex; justify-content: center; align-items: center;
+            margin: 0; padding: 0; height: 100%; width: 100%;
             background: #000 url('gate.jpg') no-repeat center center fixed; 
             background-size: cover;
             font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
         }
 
         /* التغبيش فقط على الخلفية */
@@ -19,7 +19,7 @@
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.4); 
-            backdrop-filter: blur(3px); /* تغبيش خفيف للخلفية */
+            backdrop-filter: blur(3px);
             z-index: 1;
         }
 
@@ -90,44 +90,43 @@
     <div class="content">
         <img src="lain.jpg" class="lain-avatar" id="avatar">
         <h1 id="typewriter"></h1>
-        <!-- الزر اللي ينقلك لصفحة سوبارو -->
         <button class="action-btn" id="nextBtn" onclick="goToRoom()">
             هل أنت متأكد من أنها فكرة جيدة أن ندخل هنا؟
         </button>
     </div>
 
-        // أول ما تفتح الصفحة، يشيك هل خويك دخل الكود قبل كذا؟
-    window.onload = function() {
-        const secretKey = localStorage.getItem("the_last_road_key");
-        
-        // إذا الكود مخزن ومحفوظ في جواله، طيره للمقر فوراً
-        if (secretKey === "unknown limit") {
-            window.location.href = "base.html"; 
-        } else {
-            // إذا أول مرة يدخل، ابدأ الكاتسين حق لين
-            setTimeout(typeWriter, 1500);
-        }
-    };
-
-    const text = "إنه مكان غريب... لكن مألوف قليلاً";
-    let i = 0;
-    
-    function typeWriter() {
-        if (i < text.length) {
-            document.getElementById("typewriter").innerHTML += text.charAt(i);
-            i++;
-            setTimeout(typeWriter, 140); 
-        } else {
-            setTimeout(() => {
-                document.getElementById("nextBtn").classList.add("visible");
-            }, 1000);
-        }
-    }
-
-    function goToRoom() {
-        // ينتقل للممر (صفحة البنت اللي تأشر)
-        window.location.href = "room.html";
-    }
+    <script>
+        // نظام "الحارس الذكي" - يفحص الذاكرة عند التحميل
+        window.onload = function() {
+            const savedKey = localStorage.getItem("the_last_road_key");
             
+            // إذا كان المستخدم قد أدخل الكود الصحيح مسبقاً، يتخطى كل شيء
+            if (savedKey === "unknown limit") {
+                window.location.href = "base.html"; 
+            } else {
+                // إذا لم يدخل الكود من قبل، ابدأ القصة
+                setTimeout(typeWriter, 1500);
+            }
+        };
+
+        const text = "إنه مكان غريب... لكن مألوف قليلاً";
+        let i = 0;
+        
+        function typeWriter() {
+            if (i < text.length) {
+                document.getElementById("typewriter").innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 140); 
+            } else {
+                setTimeout(() => {
+                    document.getElementById("nextBtn").classList.add("visible");
+                }, 1000);
+            }
+        }
+
+        function goToRoom() {
+            window.location.href = "room.html";
+        }
+    </script>
 </body>
 </html>
