@@ -1,15 +1,85 @@
-<html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
-    <title>Refused</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Denied - The Last Road</title>
     <style>
-        body {
-            background-image: url('subaru.jpg');
+        body, html {
+            margin: 0; padding: 0; height: 100%; width: 100%;
+            background: #000;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+
+        /* صورة سوبارو الجديدة */
+        .bg-image {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('refused.jpg') no-repeat center center fixed;
             background-size: cover;
+            z-index: -1;
+            filter: brightness(0); /* تبدأ مظلمة تماماً */
+            animation: lightRise 6s ease-in forwards; /* النور يرتفع ببطء */
+        }
+
+        .content {
+            position: relative; z-index: 10;
+            text-align: center;
+            max-width: 85%;
+        }
+
+        /* نص الغضب (اهتزاز هادئ) */
+        .angry-text {
+            color: #ff0000;
+            font-size: 1.6rem;
+            font-weight: bold;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+            margin-bottom: 60px;
+            animation: calmShake 0.5s infinite alternate; /* اهتزاز أهدأ */
+        }
+
+        .shake-btn {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #333;
+            color: #666;
+            padding: 12px 45px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.5s;
+        }
+
+        .shake-btn:hover {
+            color: #fff;
+            border-color: #ff0000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        }
+
+        /* أنيميشن ارتفاع النور */
+        @keyframes lightRise {
+            0% { filter: brightness(0); }
+            100% { filter: brightness(0.6); } /* يبقى الجو غامض */
+        }
+
+        /* أنيميشن الاهتزاز الهادئ */
+        @keyframes calmShake {
+            from { transform: translate(1px, 0); }
+            to { transform: translate(-1px, 1px); }
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to the Refused Page</h1>
-    <p>This is a simple HTML page with a background image.</p>
+
+    <div class="bg-image"></div>
+
+    <div class="content">
+        <p class="angry-text">
+            "من أنت حتى ترفض... أصلاً ما كان مرحب بك، أنت مجرد دخيل أو قروي ضل طريقه!"
+        </p>
+        
+        <button class="shake-btn" onclick="window.location.href='https://google.com'">اسـتـمـر</button>
+    </div>
+
 </body>
 </html>
