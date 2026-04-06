@@ -58,9 +58,9 @@
         <button id="exitBtn" class="exit-btn" onclick="terminate()">استمرار...</button>
     </div>
 
-    <!-- تم تعديل الاسم هنا ليطابق صورتك بالملي (مع المسافة) -->
+    <!-- تم استخدام التشفير الصحيح للمسافة %20 لضمان تشغيل الملف -->
     <audio id="memeAudio">
-        <source src="GET OUT.mp3" type="audio/mpeg">
+        <source src="GET%20OUT.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -71,7 +71,7 @@
         function playMeme() {
             if (!soundPlayed) {
                 const audio = document.getElementById('memeAudio');
-                audio.play().catch(e => console.log("تفاعل مطلوب"));
+                audio.play().catch(e => console.log("تحتاج تلمس الشاشة"));
                 soundPlayed = true;
             }
         }
