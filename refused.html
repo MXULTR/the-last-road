@@ -13,73 +13,104 @@
             display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
 
-        /* صورة سوبارو الجديدة */
-        .bg-image {
+        /* الفيديو في الخلفية */
+        #bg-video {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: url('refused.jpg') no-repeat center center fixed;
-            background-size: cover;
+            right: 0; bottom: 0;
+            min-width: 100%; min-height: 100%;
             z-index: -1;
-            filter: brightness(0); /* تبدأ مظلمة تماماً */
-            animation: lightRise 6s ease-in forwards; /* النور يرتفع ببطء */
+            object-fit: cover;
+        }
+
+        /* تأثير "تفتيح العين" ببطء (كاتسين) */
+        .eye-blink {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            z-index: 10;
+            animation: openEye 5s ease-in-out forwards;
+            pointer-events: none;
         }
 
         .content {
-            position: relative; z-index: 10;
+            position: relative; z-index: 15;
             text-align: center;
             max-width: 85%;
         }
 
-        /* نص الغضب (اهتزاز هادئ) */
+        /* نص الغضب المهتز */
         .angry-text {
             color: #ff0000;
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: bold;
-            text-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+            text-shadow: 0 0 20px #000, 0 0 10px #ff0000;
             margin-bottom: 60px;
-            animation: calmShake 0.5s infinite alternate; /* اهتزاز أهدأ */
+            opacity: 0; /* يبدأ مخفي ويظهر مع الكاتسين */
+            animation: fadeIn 3s forwards 3s, shake 0.1s infinite;
         }
 
         .shake-btn {
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid #333;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #444;
             color: #666;
             padding: 12px 45px;
             font-size: 1.1rem;
             cursor: pointer;
-            transition: 0.5s;
+            opacity: 0;
+            animation: fadeIn 2s forwards 5s;
+            transition: 0.3s;
         }
 
         .shake-btn:hover {
-            color: #fff;
-            border-color: #ff0000;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            color: #fff; border-color: #ff0000;
+            box-shadow: 0 0 20px #ff0000;
         }
 
-        /* أنيميشن ارتفاع النور */
-        @keyframes lightRise {
-            0% { filter: brightness(0); }
-            100% { filter: brightness(0.6); } /* يبقى الجو غامض */
+        @keyframes openEye {
+            0% { opacity: 1; }
+            100% { opacity: 0.4; } /* يبقى الجو مظلم قليلاً */
         }
 
-        /* أنيميشن الاهتزاز الهادئ */
-        @keyframes calmShake {
-            from { transform: translate(1px, 0); }
-            to { transform: translate(-1px, 1px); }
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px); }
+            50% { transform: translate(-1px, -1px); }
+            100% { transform: translate(0, 0); }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-image"></div>
+    <div class="eye-blink"></div>
+
+    <!-- فيديو سوبارو -->
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="Subaru.mp4" type="video/mp4">
+    </video>
+
+    <!-- ملف الصوت الميم -->
+    <audio id="getOutAudio">
+        <source src="GET OUT.mp3" type="audio/mpeg">
+    </audio>
 
     <div class="content">
-        <p class="angry-text">
+        <p class="angry-text" id="typewriter">
             "من أنت حتى ترفض... أصلاً ما كان مرحب بك، أنت مجرد دخيل أو قروي ضل طريقه!"
         </p>
         
-        <button class="shake-btn" onclick="window.location.href='https://google.com'">اسـتـمـر</button>
+        <button class="shake-btn" onclick="kickOut()">اسـتـمـر</button>
     </div>
 
+    <script>
+        function kickOut() {
+            var audio = document.getElementById('getOutAudio');
+            audio.play(); // تشغيل صوت GET OUT
+            
+            // انتظر ثانية (لين يصرخ) ثم اطرده لقوقل
+            setTimeout(function() {
+                window.location.href = "https://google.com";
+            }, 1200);
+        }
+    </script>
 </body>
 </html>
