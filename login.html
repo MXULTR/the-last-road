@@ -1,98 +1,140 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Last Road - Access Point</title>
+    <title>The Last Road - نقطة العبور</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
-            background: #000;
-            color: #0f0;
-            font-family: 'Courier New', Courier, monospace;
+            padding: 0;
+            /* 1. الصورة بالخلفية: الـ GIF الكلي */
+            background-image: url('lain Bass.gif'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #0f0; /* اللون الأخضر الكلاسيكي لشاشات الاختراق */
+            font-family: 'Cairo', 'Courier New', Courier, monospace; /* خط عربي ثم خط كود */
+            height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
             overflow: hidden;
+            transition: background 0.5s ease-in-out;
         }
 
-        .login-box {
-            border: 1px solid #0f0;
-            padding: 30px;
-            background: rgba(0, 20, 0, 0.8);
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+        /* 2. طبقة حماية (Overlay) شفافة لجعل النص واضحاً فوق الخلفية المتحركة */
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* اسود شفاف بنسبة 60% */
+            z-index: 1;
+        }
+
+        /* 3. صندوق المحتوى يطفو فوق الطبقة الشفافة */
+        .login-content {
+            position: relative;
+            z-index: 2;
             text-align: center;
+            max-width: 400px;
+            padding: 20px;
         }
 
+        /* تنسيق الكلام العربي (الكتابة ببطء) */
+        .typing-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px #0f0;
+            margin-bottom: 20px;
+            white-space: normal; /* السماح بتعدد الأسطر */
+            overflow: hidden;
+            border-left: 2px solid transparent; /* لجعل المؤشر يختفي بعد الكتابة */
+            opacity: 1; /* جعل النص يظهر تدريجياً */
+        }
+
+        /* حقل الإدخال بتنسيق بسيط ورايق */
         input {
-            background: #000;
+            background: rgba(0, 20, 0, 0.5); /* اسود شفاف جداً */
             border: 1px solid #0f0;
             color: #0f0;
-            padding: 10px;
-            width: 250px;
+            padding: 12px;
+            width: 100%;
             text-align: center;
             font-size: 1.2rem;
             outline: none;
-            margin-top: 20px;
+            border-radius: 5px;
+            margin-top: 10px;
+            letter-spacing: 2px; /* تباعد الحروف لجعل الكود يبدو كرموز */
         }
 
+        /* رسالة الحالة */
         .status {
-            margin-top: 15px;
+            margin-top: 20px;
             font-size: 0.9rem;
             min-height: 20px;
-        }
-
-        img {
-            width: 200px;
-            filter: grayscale(100%);
-            margin-bottom: 10px;
+            opacity: 0.8;
         }
     </style>
 </head>
 <body>
 
-    <div class="login-box">
-        <img src="lain Bass.gif" alt="System Core">
-        <div>INPUT ACCESS CODE:</div>
+    <div class="overlay"></div>
+
+    <div class="login-content">
+        <div class="typing-text" id="arabicTitle"></div>
         
-        <input type="password" id="passcode" placeholder="........" oninput="checkPasscode()">
+        <input type="password" id="passcode" placeholder="أدخل الرمز هنا" oninput="checkPasscode()">
         
-        <div id="status" class="status">النظام بانتظار المفتاح...</div>
+        <div id="status" class="status"></div>
     </div>
 
     <audio id="bg-audio" src="mz.mp3" autoplay loop></audio>
 
     <script>
-        // الكود السري الخاص بك
+        // 1. النص العربي الـ "رايق" الخاص بك
+        const textToType = "النظـــام ينتظر مـفتـاح العبـــور... هل تمتلكـــه؟";
         const SECRET_KEY = "unknown limit";
+        let charIndex = 0;
+        const typingSpeed = 100; // سرعة الكتابة (بالملي ثانية)
 
+        // 2. دالة الكتابة ببطء (Typewriter effect)
+        function typeWriter() {
+            if (charIndex < textToType.length) {
+                document.getElementById("arabicTitle").innerHTML += textToType.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, typingSpeed);
+            }
+        }
+
+        // 3. دالة التحقق من الكود (كما هي، مع تعديل رسائل الحالة للعربي)
         function checkPasscode() {
             const input = document.getElementById('passcode').value;
             const status = document.getElementById('status');
 
             if (input.toLowerCase() === SECRET_KEY) {
-                status.innerText = "ACCESS GRANTED. SAVING PROTOCOL...";
+                status.innerText = "تم قبول الرمز. جاري فتح البوابة...";
                 status.style.color = "#0f0";
-
-                // الخطوة السحرية: حفظ تصريح الدخول للأبد في المتصفح
                 localStorage.setItem('access_granted', 'true');
-
-                // تأخير بسيط للجو السينمائي ثم الانتقال للمقر
                 setTimeout(() => {
                     window.location.href = "base.html";
                 }, 1500);
             } else if (input.length >= SECRET_KEY.length) {
-                status.innerText = "ACCESS DENIED. TRY AGAIN.";
+                status.innerText = "الرمز خاطئ. حاول مرة أخرى.";
                 status.style.color = "#f00";
             }
         }
 
-        // محاولة تشغيل الصوت (بعض المتصفحات تطلب تفاعل أولاً)
-        window.onclick = () => {
-            document.getElementById('bg-audio').play();
-        }
+        // 4. تشغيل الكتابة ببطء عند تحميل الصفحة
+        window.onload = () => {
+            typeWriter();
+            // تشغيل الصوت بعد أول نقرة
+            window.onclick = () => {
+                document.getElementById('bg-audio').play();
+            }
+        };
     </script>
 </body>
 </html>
