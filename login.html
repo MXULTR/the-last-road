@@ -1,121 +1,98 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unknown Limit - Auth</title>
+    <title>The Last Road - Access Point</title>
     <style>
-        body, html {
-            margin: 0; padding: 0; height: 100%; width: 100%;
-            background: #000 url('lain Bass.gif') no-repeat center center fixed;
-            background-size: cover;
+        body {
+            margin: 0;
+            background: #000;
+            color: #0f0;
             font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
             overflow: hidden;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
 
-        /* تأثير تفتيح العين ببطء عند الدخول */
-        .eye-open {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 20;
-            animation: openEye 4s ease-in-out forwards;
-            pointer-events: none;
-        }
-
-        .overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); z-index: 1;
-        }
-
-        .login-container {
-            position: relative; z-index: 10;
-            text-align: center; color: #00ff88;
-            width: 85%; max-width: 400px;
-        }
-
-        h1 {
-            font-size: 1.2rem; font-weight: 200;
-            margin-bottom: 30px; min-height: 1.5em;
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
-        }
-
-        /* مربع الكود الشفاف الرهيب */
-        input {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid #333;
-            border-bottom: 2px solid #00ff88;
-            color: #00ff88;
-            padding: 12px;
-            width: 100%;
+        .login-box {
+            border: 1px solid #0f0;
+            padding: 30px;
+            background: rgba(0, 20, 0, 0.8);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
             text-align: center;
-            font-size: 1rem;
+        }
+
+        input {
+            background: #000;
+            border: 1px solid #0f0;
+            color: #0f0;
+            padding: 10px;
+            width: 250px;
+            text-align: center;
+            font-size: 1.2rem;
             outline: none;
-            transition: 0.5s;
-            opacity: 0;
-            animation: fadeIn 2s forwards 4s;
+            margin-top: 20px;
         }
 
-        input:focus {
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
-            border-color: #00ff88;
+        .status {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            min-height: 20px;
         }
 
-        @keyframes openEye { 0% { opacity: 1; } 100% { opacity: 0.4; } }
-        @keyframes fadeIn { to { opacity: 1; } }
+        img {
+            width: 200px;
+            filter: grayscale(100%);
+            margin-bottom: 10px;
+        }
     </style>
 </head>
-<body onclick="startExperience()">
+<body>
 
-    <div class="eye-open"></div>
-    <div class="overlay"></div>
-
-    <div class="login-container">
-        <h1 id="typewriter"></h1>
-        <!-- مربع إدخال الكود -->
-        <input type="text" id="passcode" placeholder="Enter the key..." oninput="checkKey(this)">
+    <div class="login-box">
+        <img src="lain Bass.gif" alt="System Core">
+        <div>INPUT ACCESS CODE:</div>
+        
+        <input type="password" id="passcode" placeholder="........" oninput="checkPasscode()">
+        
+        <div id="status" class="status">النظام بانتظار المفتاح...</div>
     </div>
 
-    <!-- موسيقى mz.mp3 -->
-    <audio id="bgMusic" loop>
-        <source src="mz.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="bg-audio" src="mz.mp3" autoplay loop></audio>
 
     <script>
-        let i = 0;
-        const message = "تحتاج للمفتاح يا خوي...";
-        let musicStarted = false;
+        // الكود السري الخاص بك
+        const SECRET_KEY = "unknown limit";
 
-        // تشغيل الموسيقى والبدء عند أول لمسة
-        function startExperience() {
-            if (!musicStarted) {
-                document.getElementById('bgMusic').play();
-                musicStarted = true;
-                typeWriter();
-            }
-        }
+        function checkPasscode() {
+            const input = document.getElementById('passcode').value;
+            const status = document.getElementById('status');
 
-        function typeWriter() {
-            if (i < message.length) {
-                document.getElementById("typewriter").innerHTML += message.charAt(i);
-                i++;
-                setTimeout(typeWriter, 120);
-            }
-        }
+            if (input.toLowerCase() === SECRET_KEY) {
+                status.innerText = "ACCESS GRANTED. SAVING PROTOCOL...";
+                status.style.color = "#0f0";
 
-        // فحص الكود وحفظه
-        function checkKey(input) {
-            if (input.value.toLowerCase() === "unknown limit") {
-                // حفظ المفتاح في ذاكرة الجوال للأبد
-                localStorage.setItem("the_last_road_key", "unknown limit");
-                
-                // وميض أخضر ثم انتقال للمقر
-                document.body.style.backgroundColor = "#00ff88";
+                // الخطوة السحرية: حفظ تصريح الدخول للأبد في المتصفح
+                localStorage.setItem('access_granted', 'true');
+
+                // تأخير بسيط للجو السينمائي ثم الانتقال للمقر
                 setTimeout(() => {
                     window.location.href = "base.html";
-                }, 500);
+                }, 1500);
+            } else if (input.length >= SECRET_KEY.length) {
+                status.innerText = "ACCESS DENIED. TRY AGAIN.";
+                status.style.color = "#f00";
             }
+        }
+
+        // محاولة تشغيل الصوت (بعض المتصفحات تطلب تفاعل أولاً)
+        window.onclick = () => {
+            document.getElementById('bg-audio').play();
         }
     </script>
 </body>
 </html>
-
