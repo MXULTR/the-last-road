@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Last Road - Headquarters</title>
+    <title>The Last Road - Base Headquarters</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
             padding: 0;
-            /* 1. الخلفية الثابتة man.gif */
+            /* 1. الخلفية الثابتة matrix code (مثال: man.gif) */
             background-image: url('man.gif'); 
             background-size: cover;
             background-position: center;
@@ -24,7 +24,7 @@
             overflow: hidden;
         }
 
-        /* 2. طبقة حماية خلفية داكنة */
+        /* 2. طبقة حماية داكنة (Overlay) لجعل الواجهة واضحة */
         .overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -38,7 +38,7 @@
             z-index: 2;
             width: 90%;
             height: 85%;
-            background: rgba(0, 15, 0, 0.7); /* شفافة جزئياً */
+            background: rgba(0, 15, 0, 0.7); /* شفافة جزئياً (70-80%) */
             border: 1px solid #0f0;
             border-radius: 12px;
             box-shadow: 0 0 25px rgba(0, 255, 0, 0.2);
@@ -48,15 +48,15 @@
 
         /* --- Sidebar الشريط الجانبي الأيسر --- */
         .sidebar {
-            width: 70px; /* عرض ثابت مثل ديسكورد الجوال */
+            width: 80px; /* عرض ثابت مثل ديسكورد */
             height: 100%;
             background: rgba(0, 10, 0, 0.8);
             border-left: 1px solid #0f0;
-            padding: 15px 5px;
+            padding: 15px 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between; /* النجمة في الأسفل */
+            justify-content: space-between; /* الأيقونات في الأسفل */
         }
 
         .server-icons-group {
@@ -67,12 +67,12 @@
             width: 100%;
         }
 
-        /* صورة بروفايل LainProf.jpeg */
-        .profile-icon {
-            width: 50px;
-            height: 50px;
+        /* أيقونة خادم ديسكورد (Discord.jpg) */
+        .discord-icon {
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            background-image: url('lain prof.jpeg');
+            background-image: url('Discord.jpg'); /* شعار ديسكورد الكلاسيكي */
             background-size: cover;
             background-position: center;
             border: 2px solid #0f0;
@@ -80,10 +80,18 @@
             cursor: pointer;
         }
 
-        /* أيقونات الرومات الشفافة # */
+        /* أيقونات الرومات الشفافة المستديرة */
+        .room-icon-list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+        }
+
         .room-icon {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             background: rgba(0, 255, 0, 0.1);
             border: 1px solid #0f0;
@@ -93,20 +101,51 @@
             color: #0f0;
             font-size: 1.5rem;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background 0.3s, transform 0.3s;
         }
 
-        .room-icon:hover, .room-icon.active {
+        .room-icon:hover {
             background: rgba(0, 255, 0, 0.3);
+            transform: scale(1.1);
         }
 
-        /* أيقونة النجمة في الأسفل */
-        .star-icon {
-            font-size: 2rem;
-            color: #ff0; /* أصفر نجمة */
-            text-shadow: 0 0 10px #ff0;
+        /* صورة بروفايل LainProf.jpeg */
+        .profile-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-image: url('lain prof.jpeg');
+            background-size: cover;
+            background-position: center;
+            border: 2px solid transparent; /* حماية الأبعاد */
             cursor: pointer;
+        }
+
+        /* الأيقونات في الأسفل الأيمن (النجمة، البحث) */
+        .bottom-icons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
             margin-bottom: 10px;
+        }
+
+        .achievement-icon {
+            font-size: 2.5rem;
+            color: #ff0; /* أصفر نجمة */
+            text-shadow: 0 0 15px #ff0;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .achievement-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .search-icon {
+            font-size: 1.5rem;
+            color: rgba(0, 255, 0, 0.6);
+            cursor: pointer;
         }
 
         /* --- مساحة المحتوى الرئيسية --- */
@@ -127,29 +166,38 @@
 
         .chat-messages {
             flex-grow: 1;
-            padding: 20px;
+            padding: 30px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
+            text-align: right;
         }
 
-        .message {
-            background: rgba(0, 255, 0, 0.05);
-            padding: 10px 15px;
-            border-radius: 8px;
-            border-right: 2px solid transparent;
-        }
-
-        .message.system {
-            border-right-color: #0f0;
-            color: rgba(0, 255, 0, 0.8);
-        }
-
-        .message-author {
-            font-weight: bold;
-            margin-bottom: 5px;
+        .system-message {
             color: #0f0;
+            text-shadow: 0 0 10px #0f0;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .central-text {
+            color: rgba(0, 255, 0, 0.7);
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        /* مؤشر كتابة نابض */
+        .typing-cursor {
+            color: #0f0;
+            font-weight: bold;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
 
         .chat-input-area {
@@ -170,43 +218,6 @@
             outline: none;
             box-sizing: border-box; /* حماية الأبعاد */
         }
-
-        /* --- Ash Quick Screen Overlay (مخفية افتراضياً) --- */
-        #ash-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('ash.jpg'); /* لاين على الكمبيوتر */
-            background-size: cover;
-            background-position: center;
-            z-index: 1000; /* فوق كل شيء */
-            display: none; /* مخفية */
-            align-items: center;
-            justify-content: center;
-            cursor: pointer; /* للإشارة أنه يمكن إغلاقها */
-        }
-
-        .ash-dialog {
-            background: rgba(0, 0, 0, 0.9);
-            border: 2px solid #0f0;
-            border-radius: 12px;
-            padding: 30px;
-            max-width: 80%;
-            text-align: center;
-            box-shadow: 0 0 30px #0f0;
-        }
-
-        .ash-text {
-            color: #0f0;
-            font-size: 1.4rem;
-            line-height: 1.6;
-            text-shadow: 0 0 10px #0f0;
-            margin-bottom: 15px;
-        }
-
-        .ash-tip {
-            color: rgba(0, 255, 0, 0.6);
-            font-size: 0.9rem;
-        }
     </style>
 </head>
 <body>
@@ -217,40 +228,43 @@
         
         <div class="sidebar">
             <div class="server-icons-group">
-                <div class="profile-icon" title="The Last Road"></div>
+                <div class="discord-icon" title="Discord.jpg"></div>
                 
-                <div class="room-icon active" title="#1 كلام عشوائي">#</div>
-                <div class="room-icon" title="#2 الأرشيف السري">#</div>
-                <div class="room-icon" title="رسالة المطور" onclick="showAshScreen()">?</div>
+                <div class="room-icon-list">
+                    <div class="room-icon active" title="#1 كلام عشوائي">#</div>
+                    <div class="room-icon" title="#2 الأرشيف السري">#</div>
+                    <div class="room-icon" title="صوتية">🔊</div>
+                    <div class="profile-icon" title="LainProf.jpeg"></div>
+                    <div class="room-icon" title="خادم آخر">#</div>
+                </div>
             </div>
             
-            <div class="star-icon" title="تحديات النظام">&#x2B50;</div>
+            <div class="bottom-icons">
+                <div class="search-icon" title="بحث">&#x1F50D;</div> <div class="achievement-icon" title="تحديات النظام">&#x2B50;</div> </div>
         </div>
 
         <div class="main-content">
             <div class="chat-header">#1 كلام عشوائي</div>
             
             <div class="chat-messages">
-                <div class="message system">النظام بانتظار مساهماتك...</div>
+                <div class="system-message">النظام بانتظار مساهماتك...</div>
                 
-                <div class="message">
-                    <div class="message-author">[النظام]</div>
-                    تم التحقق من هوية العضو: MX. مرحباً بك في المقر.
+                <div class="central-text">
+                    [MX]: هيه! باقي اشتغل ما خلصة ، قفل الباب وراك
                 </div>
+                
+                <div class="central-text">
+                    (جاري الاتصال... النظام بانتظار مساهماتك)
+                </div>
+                
+                <div class="typing-cursor">]</div>
             </div>
             
             <div class="chat-input-area">
-                <input type="text" class="chat-input" placeholder="اكتب رسالتك هنا...">
+                <input type="text" class="chat-input" placeholder="اكتب رسالتك هنا">
             </div>
         </div>
 
-    </div>
-
-    <div id="ash-screen" onclick="hideAshScreen()">
-        <div class="ash-dialog">
-            <div class="ash-text" id="typewriterText"></div>
-            <div class="ash-tip">[انقر في أي مكان للإغلاق]</div>
-        </div>
     </div>
 
     <script>
@@ -259,35 +273,13 @@
         const typingSpeed = 80; // سرعة الكتابة
         let typingInterval;
 
-        // دالة الكتابة ببطء
+        // دالة الكتابة ببطء لرسالة MX (مدمجة)
         function typeWriter() {
             if (textIndex < messageToType.length) {
                 document.getElementById("typewriterText").innerHTML += messageToType.charAt(textIndex);
                 textIndex++;
             } else {
                 clearInterval(typingInterval);
-            }
-        }
-
-        // دالة لإظهار شاشة آش (يدوياً)
-        function showAshScreen() {
-            document.getElementById("typewriterText").innerHTML = ""; // مسح النص القديم
-            textIndex = 0;
-            document.getElementById("ash-screen").style.display = "flex";
-            clearInterval(typingInterval); // حماية من تداخل المؤقتات
-            typingInterval = setInterval(typeWriter, typingSpeed);
-        }
-
-        // دالة لإخفاء شاشة آش
-        function hideAshScreen() {
-            document.getElementById("ash-screen").style.display = "none";
-            clearInterval(typingInterval);
-        }
-
-        // إضافة حدث لإغلاق شاشة آش عند الضغط على أي زر لوحة مفاتيح
-        window.onkeydown = function(e) {
-            if (document.getElementById('ash-screen').style.display === 'flex') {
-                hideAshScreen();
             }
         }
 
