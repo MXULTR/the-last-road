@@ -3,190 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Last Road - المقر الرئيسي</title>
+    <title>The Last Road - Headquarters</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
             padding: 0;
-            /* 1. الخلفية الكلية (man.gif) */
+            /* 1. الخلفية الثابتة man.gif */
             background-image: url('man.gif'); 
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            color: #0f0; /* اللون الأخضر الكلاسيكي لشاشات الاختراق */
-            font-family: 'Cairo', 'Courier New', Courier, monospace; 
+            background-color: #000; /* احتياط لو الصورة ما حملت */
+            color: #0f0; /* أخضر نيون */
+            font-family: 'Cairo', sans-serif; 
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            transition: background 0.5s ease-in-out;
         }
 
-        /* 2. طبقة حماية (Overlay) شفافة لجعل الواجهة واضحة */
+        /* 2. طبقة حماية خلفية داكنة */
         .overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); /* اسود شفاف بنسبة 60% */
+            background: rgba(0, 0, 0, 0.6); 
             z-index: 1;
         }
 
-        /* 3. واجهة المقر (Discord-like UI)، شفافة بنسبة 70% */
+        /* 3. واجهة المقر الرئيسية (مثل ديسكورد) */
         .hq-interface {
             position: relative;
             z-index: 2;
-            width: 80%;
-            height: 80%;
-            background: rgba(0, 20, 0, 0.7); /* خلفية داكنة شفافة */
+            width: 90%;
+            height: 85%;
+            background: rgba(0, 15, 0, 0.7); /* شفافة جزئياً */
             border: 1px solid #0f0;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 0 25px rgba(0, 255, 0, 0.2);
             display: flex;
             overflow: hidden;
         }
 
-        /* --- Sidebar الأيسر --- */
+        /* --- Sidebar الشريط الجانبي الأيسر --- */
         .sidebar {
-            width: 15%;
+            width: 70px; /* عرض ثابت مثل ديسكورد الجوال */
             height: 100%;
+            background: rgba(0, 10, 0, 0.8);
             border-left: 1px solid #0f0;
-            padding: 20px 10px;
+            padding: 15px 5px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            justify-content: space-between; /* النجمة في الأسفل */
         }
 
-        /* أيقونة السيرفر (استبدال Discord بشعار بروفايل Lain Prof.jpeg) */
-        .server-icon {
-            width: 80%;
-            aspect-ratio: 1;
-            border-radius: 50%;
-            background-image: url('lain prof.jpeg'); /* صورة بروفايل لاين */
-            background-size: cover;
-            background-position: center;
-            border: 2px solid #0f0;
-            margin-bottom: 20px;
-            box-shadow: 0 0 10px #0f0;
-        }
-
-        .room-icons {
+        .server-icons-group {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 15px;
-            flex-grow: 1;
+            width: 100%;
         }
 
-        .room-icon {
-            width: 60%;
-            aspect-ratio: 1;
+        /* صورة بروفايل LainProf.jpeg */
+        .profile-icon {
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: rgba(0, 255, 0, 0.2);
-            border: 1px solid transparent;
+            background-image: url('lain prof.jpeg');
+            background-size: cover;
+            background-position: center;
+            border: 2px solid #0f0;
+            box-shadow: 0 0 10px #0f0;
+            cursor: pointer;
+        }
+
+        /* أيقونات الرومات الشفافة # */
+        .room-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #0f0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            color: #0f0;
+            font-size: 1.5rem;
             cursor: pointer;
-            transition: border 0.3s, background 0.3s;
+            transition: background 0.3s;
         }
 
-        .room-icon:hover {
-            border: 1px solid #0f0;
+        .room-icon:hover, .room-icon.active {
             background: rgba(0, 255, 0, 0.3);
         }
 
-        /* قسم التحديات (إنجازات Sony/Steam) */
-        .achievement-icon {
-            font-size: 2.5rem;
-            text-shadow: 0 0 10px #0f0;
+        /* أيقونة النجمة في الأسفل */
+        .star-icon {
+            font-size: 2rem;
+            color: #ff0; /* أصفر نجمة */
+            text-shadow: 0 0 10px #ff0;
             cursor: pointer;
-            transition: transform 0.3s;
+            margin-bottom: 10px;
         }
 
-        .achievement-icon:hover {
-            transform: scale(1.1);
-        }
-
-        /* --- مساحة المحادثة والمحتوى --- */
-        .chat-area {
-            width: 85%;
+        /* --- مساحة المحتوى الرئيسية --- */
+        .main-content {
+            flex-grow: 1;
             height: 100%;
             display: flex;
             flex-direction: column;
         }
 
         .chat-header {
-            padding: 15px;
+            padding: 15px 20px;
             border-bottom: 1px solid #0f0;
-            text-align: right;
             font-weight: bold;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
+            background: rgba(0, 10, 0, 0.5);
         }
 
         .chat-messages {
             flex-grow: 1;
             padding: 20px;
             overflow-y: auto;
-            text-align: right;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        .status-text {
+        .message {
+            background: rgba(0, 255, 0, 0.05);
+            padding: 10px 15px;
+            border-radius: 8px;
+            border-right: 2px solid transparent;
+        }
+
+        .message.system {
+            border-right-color: #0f0;
+            color: rgba(0, 255, 0, 0.8);
+        }
+
+        .message-author {
+            font-weight: bold;
+            margin-bottom: 5px;
             color: #0f0;
-            text-shadow: 0 0 10px #0f0;
-            margin-bottom: 15px;
-            font-size: 1rem;
+        }
+
+        .chat-input-area {
+            padding: 15px;
+            border-top: 1px solid #0f0;
+            background: rgba(0, 5, 0, 0.8);
         }
 
         .chat-input {
-            padding: 15px;
-            border-top: 1px solid #0f0;
-            display: flex;
-            gap: 10px;
-        }
-
-        input {
-            flex-grow: 1;
-            background: rgba(0, 20, 0, 0.5);
+            width: 100%;
+            background: rgba(0, 20, 0, 0.6);
             border: 1px solid #0f0;
-            color: #0f0;
+            border-radius: 8px;
             padding: 12px;
-            text-align: right;
-            border-radius: 5px;
+            color: #0f0;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
             outline: none;
+            box-sizing: border-box; /* حماية الأبعاد */
         }
 
-        /* --- Ash Quick Screen (Overlay) --- */
+        /* --- Ash Quick Screen Overlay (مخفية افتراضياً) --- */
         #ash-screen {
-            position: absolute;
+            position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('ash.jpg'); /* شاشة Quick Screen (لاين والكمبيوتر) */
+            background-image: url('ash.jpg'); /* لاين على الكمبيوتر */
             background-size: cover;
             background-position: center;
-            z-index: 100; /* تطفو فوق المقر */
-            display: none; /* تظهر عند الاستدعاء */
+            z-index: 1000; /* فوق كل شيء */
+            display: none; /* مخفية */
             align-items: center;
             justify-content: center;
+            cursor: pointer; /* للإشارة أنه يمكن إغلاقها */
         }
 
-        #ash-screen .ash-dialog {
-            background: rgba(0, 0, 0, 0.85); /* اسود داكن جداً شفاف */
+        .ash-dialog {
+            background: rgba(0, 0, 0, 0.9);
             border: 2px solid #0f0;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 30px;
-            max-width: 500px;
+            max-width: 80%;
             text-align: center;
             box-shadow: 0 0 30px #0f0;
         }
 
         .ash-text {
             color: #0f0;
-            text-shadow: 0 0 10px #0f0;
-            margin-bottom: 20px;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             line-height: 1.6;
+            text-shadow: 0 0 10px #0f0;
+            margin-bottom: 15px;
         }
 
         .ash-tip {
@@ -202,99 +216,82 @@
     <div class="hq-interface">
         
         <div class="sidebar">
-            <div class="room-icons">
-                <div class="server-icon" title="The Last Road"></div>
+            <div class="server-icons-group">
+                <div class="profile-icon" title="The Last Road"></div>
                 
-                <div class="room-icon" title="روم كـلام عـشـوائـي" onclick="loadRoom('#1 كلام عشوائي')">#</div>
-                <div class="room-icon" title="روم الأرـشـيـف الـسـري" onclick="loadRoom('#2 الأرشيف السري')">#</div>
-                <div class="room-icon" title="روم الإنجازات" onclick="openChallenges()">#</div>
-                <div class="room-icon" title="سكرين آش السريع" onclick="openAshScreen()">#</div>
+                <div class="room-icon active" title="#1 كلام عشوائي">#</div>
+                <div class="room-icon" title="#2 الأرشيف السري">#</div>
+                <div class="room-icon" title="رسالة المطور" onclick="showAshScreen()">?</div>
             </div>
             
-            <div class="achievement-icon" title="تحديات النظام" onclick="openChallenges()">&#x2B50;</div> </div>
+            <div class="star-icon" title="تحديات النظام">&#x2B50;</div>
+        </div>
 
-        <div class="chat-area">
-            <div class="chat-header" id="currentRoomName">#1 كلام عشوائي</div>
-            <div class="chat-messages" id="chatContent">
-                <div class="status-text">النظام ينتظر مـفتـاح العبـــور...</div>
-                <div class="status-text">(جاري الاتصال... النظام بانتظار مساهماتك)</div>
+        <div class="main-content">
+            <div class="chat-header">#1 كلام عشوائي</div>
+            
+            <div class="chat-messages">
+                <div class="message system">النظام بانتظار مساهماتك...</div>
+                
+                <div class="message">
+                    <div class="message-author">[النظام]</div>
+                    تم التحقق من هوية العضو: MX. مرحباً بك في المقر.
+                </div>
             </div>
-            <div class="chat-input">
-                <input type="text" placeholder="اكتب رسالتك هنا">
+            
+            <div class="chat-input-area">
+                <input type="text" class="chat-input" placeholder="اكتب رسالتك هنا...">
             </div>
         </div>
 
     </div>
 
-    <div id="ash-screen">
+    <div id="ash-screen" onclick="hideAshScreen()">
         <div class="ash-dialog">
-            <div class="ash-text" id="mxMessage"></div>
-            <div class="ash-tip">[اضغط أي زر للخروج]</div>
+            <div class="ash-text" id="typewriterText"></div>
+            <div class="ash-tip">[انقر في أي مكان للإغلاق]</div>
         </div>
     </div>
 
     <script>
-        // 1. النص العربي الـ "رايق" الخاص بك ورسالة MX
-        const SECRET_KEY = "unknown limit";
-        const mxMessageText = "هيه! باقي اشتغل ما خلصة ، قفل الباب وراك";
+        const messageToType = "هيه! باقي اشتغل ما خلصة ، قفل الباب وراك";
+        let textIndex = 0;
+        const typingSpeed = 80; // سرعة الكتابة
+        let typingInterval;
 
-        let chatIndex = 0;
-        let charIndex = 0;
-        const typingSpeed = 70; // سرعة الكتابة
-
-        // دالة الكتابة ببطء (Typewriter effect) لرسالة MX
-        function typeWriterMX() {
-            if (charIndex < mxMessageText.length) {
-                document.getElementById("mxMessage").innerHTML += mxMessageText.charAt(charIndex);
-                charIndex++;
-                setTimeout(typeWriterMX, typingSpeed);
+        // دالة الكتابة ببطء
+        function typeWriter() {
+            if (textIndex < messageToType.length) {
+                document.getElementById("typewriterText").innerHTML += messageToType.charAt(textIndex);
+                textIndex++;
+            } else {
+                clearInterval(typingInterval);
             }
         }
 
-        // دالة تحميل روم معين
-        function loadRoom(roomName) {
-            document.getElementById('currentRoomName').innerText = roomName;
-            document.getElementById('chatContent').innerHTML = `<div class="status-text">تم تحميل ${roomName}. النظام بانتظار مساهماتك...</div>`;
-            closeAshScreen(); // إغلاق أي سكرين مفتوح عند تغيير الروم
+        // دالة لإظهار شاشة آش (يدوياً)
+        function showAshScreen() {
+            document.getElementById("typewriterText").innerHTML = ""; // مسح النص القديم
+            textIndex = 0;
+            document.getElementById("ash-screen").style.display = "flex";
+            clearInterval(typingInterval); // حماية من تداخل المؤقتات
+            typingInterval = setInterval(typeWriter, typingSpeed);
         }
 
-        // دالة فتح قسم التحديات (لتعريفها لاحقاً)
-        function openChallenges() {
-            alert("قسم التحديات ما زال قيد البرمجة... انتظر قليلاً.");
+        // دالة لإخفاء شاشة آش
+        function hideAshScreen() {
+            document.getElementById("ash-screen").style.display = "none";
+            clearInterval(typingInterval);
         }
 
-        // دالة فتح سكرين آش السريع (Ash Quick Screen)
-        function openAshScreen() {
-            const ashScreen = document.getElementById('ash-screen');
-            ashScreen.style.display = 'flex';
-            document.getElementById("mxMessage").innerHTML = ""; // مسح النص القديم
-            charIndex = 0;
-            typeWriterMX(); // بدء تأثير الكتابة ببطء
-        }
-
-        // دالة إغلاق سكرين آش عند الضغط على أي زر
-        function closeAshScreen() {
-            document.getElementById('ash-screen').style.display = 'none';
-        }
-
-        // تسجيل تفاعل لإغلاق سكرين آش
-        window.onclick = (e) => {
-            if (e.target.id === 'ash-screen') {
-                closeAshScreen();
-            }
-        }
-
-        // إضافة حدث لإغلاق سكرين آش عند الضغط على أي زر لوحة مفاتيح
-        window.onkeydown = (e) => {
+        // إضافة حدث لإغلاق شاشة آش عند الضغط على أي زر لوحة مفاتيح
+        window.onkeydown = function(e) {
             if (document.getElementById('ash-screen').style.display === 'flex') {
-                closeAshScreen();
+                hideAshScreen();
             }
         }
 
-        // تشغيل الكتابة ببطء عند تحميل الصفحة لفتح سكرين آش افتراضياً كبداية
-        window.onload = () => {
-            openAshScreen(); // فتح السكرين الكوميدي كترحيب
-        }
+        // هام جداً: لا يوجد أي كود هنا يفتح الشاشة تلقائياً عند التحميل!
     </script>
 </body>
 </html>
