@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Last Road - Base Headquarters</title>
+    <title>The Last Road - Headquarters</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* =========================================
+           1. الخلفية الأساسية (خارج الواجهة)
+           ========================================= */
         body {
             margin: 0;
             padding: 0;
-            /* 1. الخلفية الثابتة matrix code (مثال: man.gif) */
-            background-image: url('man.gif'); 
+            background-image: url('man.gif'); /* الـ GIF الخاص بك */
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            background-color: #000; /* احتياط لو الصورة ما حملت */
-            color: #0f0; /* أخضر نيون */
-            font-family: 'Cairo', sans-serif; 
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Cairo', monospace;
             height: 100vh;
             display: flex;
             align-items: center;
@@ -24,266 +26,305 @@
             overflow: hidden;
         }
 
-        /* 2. طبقة حماية داكنة (Overlay) لجعل الواجهة واضحة */
-        .overlay {
+        /* طبقة تعتيم خفيفة جداً لضمان بروز الواجهة */
+        .page-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); 
+            background: rgba(0, 0, 0, 0.3);
             z-index: 1;
         }
 
-        /* 3. واجهة المقر الرئيسية (مثل ديسكورد) */
-        .hq-interface {
+        /* =========================================
+           2. الحاوية الزجاجية (تستخدم صورتك المرفوعة)
+           ========================================= */
+        .glass-container {
             position: relative;
             z-index: 2;
             width: 90%;
             height: 85%;
-            background: rgba(0, 15, 0, 0.7); /* شفافة جزئياً (70-80%) */
-            border: 1px solid #0f0;
-            border-radius: 12px;
-            box-shadow: 0 0 25px rgba(0, 255, 0, 0.2);
+            /* استخدام المربع الشفاف الذي رفعته */
+            background-image: url('chat-panel.png');
+            background-size: 100% 100%; /* تمدد لملء الحاوية */
+            background-repeat: no-repeat;
             display: flex;
-            overflow: hidden;
+            border-radius: 15px; /* تنعيم الأطراف */
+            overflow: hidden; /* لمنع خروج المحتوى عن الإطار */
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.1);
         }
 
-        /* --- Sidebar الشريط الجانبي الأيسر --- */
-        .sidebar {
-            width: 80px; /* عرض ثابت مثل ديسكورد */
-            height: 100%;
-            background: rgba(0, 10, 0, 0.8);
-            border-left: 1px solid #0f0;
-            padding: 15px 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between; /* الأيقونات في الأسفل */
-        }
-
-        .server-icons-group {
+        /* =========================================
+           3. الشريط الجانبي الأيمن (شريط السيرفرات)
+           ========================================= */
+        .servers-sidebar {
+            width: 80px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
-            width: 100%;
+            padding: 20px 0;
+            border-left: 1px solid rgba(0, 255, 0, 0.2);
+            background: rgba(0, 10, 0, 0.4); /* تعتيم خفيف فوق الزجاج */
         }
 
-        /* أيقونة خادم ديسكورد (Discord.jpg) */
-        .discord-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-image: url('Discord.jpg'); /* شعار ديسكورد الكلاسيكي */
+        .server-icon {
+            width: 55px;
+            height: 55px;
+            background-image: url('lain-prof.png'); /* الأيقونة المرفوعة */
             background-size: cover;
             background-position: center;
-            border: 2px solid #0f0;
-            box-shadow: 0 0 10px #0f0;
-            cursor: pointer;
-        }
-
-        /* أيقونات الرومات الشفافة المستديرة */
-        .room-icon-list {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            width: 100%;
-        }
-
-        .room-icon {
-            width: 60px;
-            height: 60px;
             border-radius: 50%;
-            background: rgba(0, 255, 0, 0.1);
-            border: 1px solid #0f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #0f0;
-            font-size: 1.5rem;
             cursor: pointer;
-            transition: background 0.3s, transform 0.3s;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
         }
 
-        .room-icon:hover {
-            background: rgba(0, 255, 0, 0.3);
+        .server-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #0f0;
+        }
+
+        .sidebar-spacer {
+            flex-grow: 1; /* لدفع الأيقونة التالية للأسفل */
+        }
+
+        .bottom-icon {
+            width: 50px;
+            height: 50px;
+            background-image: url('challenges-icon.png'); /* أيقونة التحديات المرفوعة */
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .bottom-icon:hover {
             transform: scale(1.1);
         }
 
-        /* صورة بروفايل LainProf.jpeg */
-        .profile-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-image: url('lain prof.jpeg');
-            background-size: cover;
-            background-position: center;
-            border: 2px solid transparent; /* حماية الأبعاد */
-            cursor: pointer;
-        }
-
-        /* الأيقونات في الأسفل الأيمن (النجمة، البحث) */
-        .bottom-icons {
+        /* =========================================
+           4. قائمة الرومات (بجوار شريط السيرفرات)
+           ========================================= */
+        .channels-panel {
+            width: 240px;
+            background: rgba(0, 15, 0, 0.3);
+            border-left: 1px solid rgba(0, 255, 0, 0.2);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 10px;
+            padding: 15px;
         }
 
-        .achievement-icon {
-            font-size: 2.5rem;
-            color: #ff0; /* أصفر نجمة */
-            text-shadow: 0 0 15px #ff0;
+        .server-header {
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-shadow: 0 0 5px #0f0;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 255, 0, 0.2);
+        }
+
+        .channel {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: rgba(0, 255, 0, 0.7);
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .channel:hover, .channel.active {
+            background: rgba(0, 255, 0, 0.1);
+            color: #0f0;
+        }
+
+        .star-channel-icon {
+            width: 60px;
+            height: 60px;
+            background-image: url('lain-star.png'); /* الأيقونة الثالثة المرفوعة */
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%;
+            margin-top: 20px;
+            align-self: center;
             cursor: pointer;
             transition: transform 0.3s;
         }
 
-        .achievement-icon:hover {
-            transform: scale(1.1);
+        .star-channel-icon:hover {
+            transform: rotate(15deg) scale(1.1);
         }
 
-        .search-icon {
-            font-size: 1.5rem;
-            color: rgba(0, 255, 0, 0.6);
-            cursor: pointer;
-        }
-
-        /* --- مساحة المحتوى الرئيسية --- */
-        .main-content {
+        /* =========================================
+           5. منطقة الدردشة (Chat Area)
+           ========================================= */
+        .chat-area {
             flex-grow: 1;
-            height: 100%;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
 
-        .chat-header {
+        .chat-header-top {
             padding: 15px 20px;
-            border-bottom: 1px solid #0f0;
+            border-bottom: 1px solid rgba(0, 255, 0, 0.2);
             font-weight: bold;
             font-size: 1.2rem;
-            background: rgba(0, 10, 0, 0.5);
         }
 
-        .chat-messages {
+        .chat-content {
             flex-grow: 1;
-            padding: 30px;
+            padding: 20px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            text-align: right;
+            gap: 15px;
         }
 
-        .system-message {
-            color: #0f0;
-            text-shadow: 0 0 10px #0f0;
+        .msg-box {
             font-size: 1.1rem;
-            margin-bottom: 10px;
+            line-height: 1.6;
+            text-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
         }
 
-        .central-text {
-            color: rgba(0, 255, 0, 0.7);
-            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-        }
-
-        /* مؤشر كتابة نابض */
-        .typing-cursor {
-            color: #0f0;
+        .msg-author {
+            color: #fff;
             font-weight: bold;
-            animation: pulse 1s infinite;
+            margin-bottom: 5px;
         }
 
-        @keyframes pulse {
+        .typing-cursor {
+            display: inline-block;
+            font-weight: bold;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
 
-        .chat-input-area {
-            padding: 15px;
-            border-top: 1px solid #0f0;
-            background: rgba(0, 5, 0, 0.8);
+        .chat-input-container {
+            padding: 20px;
+            border-top: 1px solid rgba(0, 255, 0, 0.2);
         }
 
         .chat-input {
             width: 100%;
-            background: rgba(0, 20, 0, 0.6);
-            border: 1px solid #0f0;
+            background: rgba(0, 20, 0, 0.5);
+            border: 1px solid rgba(0, 255, 0, 0.4);
             border-radius: 8px;
-            padding: 12px;
+            padding: 15px;
             color: #0f0;
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Cairo', monospace;
             font-size: 1rem;
             outline: none;
-            box-sizing: border-box; /* حماية الأبعاد */
+            box-sizing: border-box;
+        }
+
+        .chat-input::placeholder {
+            color: rgba(0, 255, 0, 0.4);
         }
     </style>
 </head>
 <body>
 
-    <div class="overlay"></div>
+    <audio id="bgMusic" src="mz.mp3" autoplay loop></audio>
 
-    <div class="hq-interface">
+    <div class="page-overlay"></div>
+
+    <div class="glass-container">
         
-        <div class="sidebar">
-            <div class="server-icons-group">
-                <div class="discord-icon" title="Discord.jpg"></div>
-                
-                <div class="room-icon-list">
-                    <div class="room-icon active" title="#1 كلام عشوائي">#</div>
-                    <div class="room-icon" title="#2 الأرشيف السري">#</div>
-                    <div class="room-icon" title="صوتية">🔊</div>
-                    <div class="profile-icon" title="LainProf.jpeg"></div>
-                    <div class="room-icon" title="خادم آخر">#</div>
-                </div>
-            </div>
-            
-            <div class="bottom-icons">
-                <div class="search-icon" title="بحث">&#x1F50D;</div> <div class="achievement-icon" title="تحديات النظام">&#x2B50;</div> </div>
+        <div class="servers-sidebar">
+            <div class="server-icon" title="The Last Road"></div>
+            <div class="sidebar-spacer"></div>
+            <div class="bottom-icon" title="الإنجازات"></div>
         </div>
 
-        <div class="main-content">
-            <div class="chat-header">#1 كلام عشوائي</div>
+        <div class="channels-panel">
+            <div class="server-header">The Last Road</div>
+            <div class="channel active"># كلام عشوائي</div>
+            <div class="channel"># مالي خلق احط اسم</div>
+            <div class="star-channel-icon" title="مساحة فارغة"></div>
+        </div>
+
+        <div class="chat-area">
+            <div class="chat-header-top"># كلام عشوائي</div>
             
-            <div class="chat-messages">
-                <div class="system-message">النظام بانتظار مساهماتك...</div>
-                
-                <div class="central-text">
-                    [MX]: هيه! باقي اشتغل ما خلصة ، قفل الباب وراك
+            <div class="chat-content" id="chatHistory">
                 </div>
-                
-                <div class="central-text">
-                    (جاري الاتصال... النظام بانتظار مساهماتك)
-                </div>
-                
-                <div class="typing-cursor">]</div>
-            </div>
             
-            <div class="chat-input-area">
-                <input type="text" class="chat-input" placeholder="اكتب رسالتك هنا">
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" placeholder="النظام لا يستقبل مدخلات حالياً..." disabled>
             </div>
         </div>
 
     </div>
 
     <script>
-        const messageToType = "هيه! باقي اشتغل ما خلصة ، قفل الباب وراك";
-        let textIndex = 0;
-        const typingSpeed = 80; // سرعة الكتابة
-        let typingInterval;
+        // تشغيل الموسيقى فوراً (تتطلب تفاعل المستخدم في بعض المتصفحات)
+        window.addEventListener('click', () => {
+            document.getElementById('bgMusic').play();
+        }, { once: true });
 
-        // دالة الكتابة ببطء لرسالة MX (مدمجة)
-        function typeWriter() {
-            if (textIndex < messageToType.length) {
-                document.getElementById("typewriterText").innerHTML += messageToType.charAt(textIndex);
-                textIndex++;
-            } else {
-                clearInterval(typingInterval);
-            }
+        // --- نظام الترحيب السينمائي (Cutscene) ---
+        const chatHistory = document.getElementById('chatHistory');
+        
+        // نصوص المشهد
+        const sceneData = [
+            { author: "[النظام]", text: "اوه اهلا! اول زائر اظنك هنا ... حياك :)", delay: 1000 },
+            { author: "[MX]", text: "هيه! باقي اشتغل ما خلصة ، قفل الباب وراك", delay: 3500 },
+            { author: "[النظام]", text: "(جاري الاتصال... النظام بانتظار مساهماتك)", delay: 6500 }
+        ];
+
+        function typeMessage(author, text, startDelay) {
+            setTimeout(() => {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'msg-box';
+                
+                const authorDiv = document.createElement('div');
+                authorDiv.className = 'msg-author';
+                authorDiv.innerText = author;
+                
+                const textSpan = document.createElement('span');
+                const cursorSpan = document.createElement('span');
+                cursorSpan.className = 'typing-cursor';
+                cursorSpan.innerText = ' ]';
+
+                msgDiv.appendChild(authorDiv);
+                msgDiv.appendChild(textSpan);
+                msgDiv.appendChild(cursorSpan);
+                chatHistory.appendChild(msgDiv);
+
+                let i = 0;
+                const typingInterval = setInterval(() => {
+                    textSpan.innerText += text.charAt(i);
+                    i++;
+                    chatHistory.scrollTop = chatHistory.scrollHeight; // النزول لأسفل الشات
+                    
+                    if (i >= text.length) {
+                        clearInterval(typingInterval);
+                        // إزالة المؤشر بعد الانتهاء من الكتابة إلا للرسالة الأخيرة
+                        if (text !== sceneData[sceneData.length - 1].text) {
+                            cursorSpan.remove();
+                        }
+                    }
+                }, 50); // سرعة الكتابة
+
+            }, startDelay);
         }
 
-        // هام جداً: لا يوجد أي كود هنا يفتح الشاشة تلقائياً عند التحميل!
+        // تشغيل المشهد بمجرد تحميل الصفحة
+        window.onload = () => {
+            sceneData.forEach(scene => {
+                typeMessage(scene.author, scene.text, scene.delay);
+            });
+            
+            // تفعيل حقل الإدخال بعد انتهاء المشهد
+            setTimeout(() => {
+                const inputField = document.querySelector('.chat-input');
+                inputField.disabled = false;
+                inputField.placeholder = "اكتب رسالتك هنا...";
+            }, 8000);
+        };
     </script>
 </body>
 </html>
